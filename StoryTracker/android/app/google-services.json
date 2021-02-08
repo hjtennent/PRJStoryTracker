@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "74973818089",
+    "project_id": "prjstorytracker",
+    "storage_bucket": "prjstorytracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74973818089:android:ba03ea3b946d2cd8f09478",
+        "android_client_info": {
+          "package_name": "com.storytracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74973818089-3r96m7oqsmognhtonsj69s0tfvn943tp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWRi-zhtgTMsb_fzqt-Rwm-0PBW9_MIiE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74973818089-3r96m7oqsmognhtonsj69s0tfvn943tp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "74973818089-uh8eokq3nbmsd7fs2ontllnflup0rken.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.StoryTracker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

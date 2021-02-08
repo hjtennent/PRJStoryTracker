@@ -21,6 +21,9 @@ const styles = StyleSheet.create({
   topicLinkInput: {
     paddingBottom: 20,
     fontSize: 18,
+  },
+  cancelButton: {
+    color: 'grey'
   }
 });
 
