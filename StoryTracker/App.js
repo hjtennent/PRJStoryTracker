@@ -14,15 +14,26 @@ import {
 
 import Home from './app/component/screens/Home';
 import styles from './app/component/styles/App';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Loading from './app/component/screens/Loading';
+import LogIn from './app/component/screens/LogIn';
+import SignUp from './app/component/screens/SignUp';
+import Updates from './app/component/screens/Updates';
+
+const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={styles.container}>
-        <Home />
-      </SafeAreaView>
-    </>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Loading" component={Loading} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Login" component={LogIn} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Updates" component={Updates} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
