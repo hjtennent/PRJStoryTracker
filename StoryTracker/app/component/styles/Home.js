@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     color: 'grey'
+  },
+  buttonContainer: {
+    flexDirection: "row",
   }
 });
 

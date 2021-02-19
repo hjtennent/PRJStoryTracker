@@ -65,15 +65,19 @@ const Home = (props) => {
     setIsLoading(false)
   }
 
-  const getUpdatesButton = () => {
+  const getUpdatesButton = (test=false) => {
     if (savedStoryID == "" || savedStoryTopic == []) {
       Alert.alert("No currently followed story.")
     } else {
       setIsLoading(true)
-      getStoryUpdates(savedStoryID, savedStoryTopic).then(response => {
-        console.log("Updates: ", response["SIMILARITIES"])
+      console.log('Home.js: ', savedStoryTopic)
+      getStoryUpdates(savedStoryID, savedStoryTopic, test).then(response => {
+        responseDict = {}
+        Object.entries(response["SIMILARITIES"]).map((key, value) => {
+          responseDict[key[0]] = parseFloat(key[1].toFixed(3))
+        })
         props.navigation.navigate("Updates", {
-          storyUpdates: response["SIMILARITIES"]
+          storyUpdates: responseDict
         })
         setIsLoading(false)
       })
@@ -91,8 +95,6 @@ const Home = (props) => {
     setStoryDescription("")
     setStoryKeywords("")
   }
-
-  // https://www.bbc.co.uk/news/health-56097088
 
   return (
     <>
@@ -116,7 +118,7 @@ const Home = (props) => {
             <Text style={styles.storyDescription}>Author: {storyAuthor}</Text>
             <Text style={styles.storyDescription}>{storyDescription}</Text>
             <Text style={styles.storyKeywords}>{storyKeywords}</Text>
-            <View>
+            <View style={styles.buttonContainer}>
               <Button
                 style={styles.followStoryButton}
                 onPress={() => followStoryButton(storyURL, storyKeywords, storyDate)}
@@ -126,6 +128,11 @@ const Home = (props) => {
                 style={styles.followStoryButton}
                 onPress={() => getUpdatesButton()}
                 title="Get Updates"
+              />
+              <Button
+                style={styles.followStoryButton}
+                onPress={() => getUpdatesButton(true)}
+                title="Get Test Updates"
               />
               <Button 
                 style={styles.cancelButton}
