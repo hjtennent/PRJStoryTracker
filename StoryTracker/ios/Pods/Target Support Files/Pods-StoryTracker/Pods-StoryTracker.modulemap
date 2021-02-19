@@ -1,6 +1,0 @@
-module Pods_StoryTracker {
-  umbrella header "Pods-StoryTracker-umbrella.h"
-
-  export *
-  module * { export * }
-}
