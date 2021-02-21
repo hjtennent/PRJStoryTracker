@@ -5,19 +5,8 @@ import {
   ActivityIndicator
 } from 'react-native'
 import styles from '../styles/Loading'
-import auth from "@react-native-firebase/auth"
 
-const Loading = (props) => {
-
-  // Handle user state changes
-  function onAuthStateChanged(user) {
-    props.navigation.navigate(user ? "Home" : "SignUp")
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+const Loading = () => {
 
   return (
     <>

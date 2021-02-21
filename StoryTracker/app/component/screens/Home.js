@@ -5,32 +5,36 @@ import {
   Button,
   TextInput,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import styles from '../styles/Home';
 import { getStoryDetails, getStoryUpdates } from "../../helper/api/api";
 import { addTopic } from "../../helper/firebase/firebase";
 import auth from "@react-native-firebase/auth"
+import Loading from './Loading';
+import { getStoryObject } from "../../helper/models/StoryModel"
 
 const Home = (props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isStoryLoaded, setIsStoryLoaded] = useState(false)
+  const [story, setStory] = useState({})
   const [storyLink, onEnterStoryLink] = React.useState("Enter story link...")
   const [storyURL, setStoryURL] = React.useState("")
   const [storyDate, setStoryDate] = React.useState("")
   const [storyAuthor, setStoryAuthor] = React.useState("")
   const [storyDescription, setStoryDescription] = React.useState("Description")
   const [storyKeywords, setStoryKeywords] = React.useState("")
+  const [storyTitle, setStoryTitle] = React.useState("")
   const [savedStoryID, setSavedStoryID] = React.useState("")
   const [savedStoryTopic, setSavedStoryTopic] = React.useState([])
   const user = auth().currentUser
 
   if (isLoading) {
     return (
-      <>
-        <Text>Loading...</Text>
-      </>
+      <><Loading /></>
     )
   }
+
   const logout = () => {
     auth().signOut()
       .then(() => props.navigation.navigate('Login'))
@@ -40,29 +44,22 @@ const Home = (props) => {
     setIsLoading(true)
     getStoryDetails(storyLink).then(response => {
       console.log("Home.js: " + response["URL"])
-      setStoryURL(response["URL"])
-      setStoryAuthor(response["AUTHORS"])
-      setStoryDate(response["DATE"])
-      setStoryDescription(response["STORY"])
-      setStoryKeywords(response["KEYWORDS"])
+      storyObject = getStoryObject(response["URL"], response["TITLE"], response["STORY"], response["AUTHORS"], response["DATE"], response["KEYWORDS"])
+      setStory(storyObject)
       setIsStoryLoaded(true)
+      //Call Firebase to save topic to database
+      console.log(storyObject)
+      firebaseResponse = addTopic(storyObject["url"], storyObject["keywords"], storyObject["date"])
+      if (firebaseResponse != null) {
+        setSavedStoryID(firebaseResponse.key)
+        setSavedStoryTopic(firebaseResponse.keywords)
+      }
       setIsLoading(false)
     })
     .catch(error => {
       console.log(error)
       setIsLoading(false)
     })
-  }
-
-  const followStoryButton = (storyURL, storyKeywords, storyDate) => {
-    setIsLoading(true)
-    //Call API to generate topic and save to database
-    response = addTopic(storyURL, storyKeywords, storyDate)
-    if (response != null) {
-      setSavedStoryID(response.key)
-      setSavedStoryTopic(response.keywords)
-    }
-    setIsLoading(false)
   }
 
   const getUpdatesButton = (test=false) => {
@@ -72,12 +69,10 @@ const Home = (props) => {
       setIsLoading(true)
       console.log('Home.js: ', savedStoryTopic)
       getStoryUpdates(savedStoryID, savedStoryTopic, test).then(response => {
-        responseDict = {}
-        Object.entries(response["SIMILARITIES"]).map((key, value) => {
-          responseDict[key[0]] = parseFloat(key[1].toFixed(3))
-        })
+        console.log("Home.js", response["SIMILARITIES"])
         props.navigation.navigate("Updates", {
-          storyUpdates: responseDict
+          originalStory: story,
+          storyUpdates: response["SIMILARITIES"]
         })
         setIsLoading(false)
       })
@@ -99,49 +94,55 @@ const Home = (props) => {
   return (
     <>
       <View style={styles.container}>
-        <Button
-          style={styles.addTopicButton}
-          onPress={() => logout()}
-          title="Logout"
-        />
-        <Text style={styles.mainText}>Welcome to the Story Tracker {user && user.email}</Text>
-        <TextInput style={styles.topicLinkInput} onChangeText={text => onEnterStoryLink(text)} value={storyLink} />
-        <Button
-          style={styles.addTopicButton}
-          onPress={() => retrieveStory()}
-          title="Get Story Details"
-        />
-      </View>
-      {isStoryLoaded && 
-        <View style={styles.storyContainer}>
-            <Text style={styles.storyDescription}>Date: {storyDate}</Text>
-            <Text style={styles.storyDescription}>Author: {storyAuthor}</Text>
-            <Text style={styles.storyDescription}>{storyDescription}</Text>
-            <Text style={styles.storyKeywords}>{storyKeywords}</Text>
-            <View style={styles.buttonContainer}>
-              <Button
-                style={styles.followStoryButton}
-                onPress={() => followStoryButton(storyURL, storyKeywords, storyDate)}
-                title="Follow Story"
-              />
-              <Button
-                style={styles.followStoryButton}
-                onPress={() => getUpdatesButton()}
-                title="Get Updates"
-              />
-              <Button
-                style={styles.followStoryButton}
-                onPress={() => getUpdatesButton(true)}
-                title="Get Test Updates"
-              />
-              <Button 
-                style={styles.cancelButton}
-                onPress={() => cancel()}
-                title="Cancel"
-              />
-            </View>
+        <View style={styles.logoutContainer}>
+          <TouchableOpacity
+            style={styles.greenFollowStoryButton}
+            onPress={() => logout()}>
+              <Text style={styles.buttonText}>Logout</Text>
+          </TouchableOpacity>
         </View>
-      }
+        <View style={styles.welcomeContainer}>
+          <Text style={styles.mainText}>Welcome to the Story Tracker, {user && user.email}</Text>
+        </View>
+        <View style={styles.linkInputContainer}>
+          <TextInput style={styles.topicLinkInput} onChangeText={text => onEnterStoryLink(text)} value={storyLink} />
+          <TouchableOpacity
+            style={isStoryLoaded ? styles.greenFollowStoryButton : styles.orangeFollowStoryButton}
+            onPress={() => retrieveStory()}>
+              <Text style={styles.buttonText}>Get Story Details</Text>
+          </TouchableOpacity>
+        </View>
+        {isStoryLoaded && 
+          <View style={styles.storyContainer}>
+            <Text style={styles.storyInfo}>Title: {story['title']}</Text>
+            <Text style={styles.storyInfo}>Date: {story['date']}</Text>
+            <Text style={styles.storyInfo}>Author: {story['authors']}</Text>
+            <Text style={styles.storyDescription}>Description: {story['story']}...</Text>
+            <View style={styles.buttonContainer}>
+              {/* <TouchableOpacity
+                style={isStoryLoaded ? styles.orangeFollowStoryButton : styles.greenFollowStoryButton}
+                onPress={() => followStoryButton(storyURL, storyKeywords, storyDate)}>
+                  <Text style={styles.buttonText}>Follow Story</Text>
+              </TouchableOpacity> */}
+              <TouchableOpacity
+                style={isStoryLoaded ? styles.orangeFollowStoryButton : styles.greenFollowStoryButton}
+                onPress={() => getUpdatesButton()}>
+                <Text style={styles.buttonText}>Get Updates</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.greenFollowStoryButton}
+                onPress={() => getUpdatesButton(true)}>
+                  <Text style={styles.buttonText}>Get Test Updates</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.greenFollowStoryButton}
+                onPress={() => cancel()}>
+                  <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        }
+      </View>
     </>
   )
 }

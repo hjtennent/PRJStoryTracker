@@ -4,30 +4,80 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: "#94CFAB",
+  },
+  logoutContainer: {
+    flex: 0.2,
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
+  welcomeContainer: {
+    flex: 0.3,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  linkInputContainer: {
+    flex: 0.5,
+    justifyContent: "center",
+    alignItems: "center",
+    width: '100%',
   },
   mainText: {
-    flex: 0.3,
+    fontSize: 18,
+    color: "white",
     fontStyle: "italic"
   },
   storyContainer: {
-    flex: 0.3,
-    alignItems: "center",
-    justifyContent: "center"
+    flex: 1,
+    width: '100%',
+    padding: 20,
+  },
+  storyInfo: {
+    marginBottom: 5
   },
   storyDescription: {
-    color: "black"
+    color: "black",
   },
   topicLinkInput: {
-    paddingBottom: 20,
+    padding: 10,
+    marginBottom: 20,
+    marginLeft: 20,
+    marginRight: 20,
     fontSize: 18,
+    backgroundColor: "#4D8E6B",
+    borderRadius: 20,
+    alignItems: "center",
+    color: "white",
+    width: '80%',
+  },
+  buttonContainer: {
+    flex: 1,
+    marginTop: 20,
+  },
+  orangeFollowStoryButton: {
+    backgroundColor: "#F25E2E",
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    marginBottom: 20,
+  },
+  greenFollowStoryButton: {
+    backgroundColor: "#4D8E6B",
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontFamily: "Oxygen-Bold",
+    fontSize: 16,
   },
   cancelButton: {
     color: 'grey'
   },
-  buttonContainer: {
-    flexDirection: "row",
-  }
 });
 
 export default styles;
