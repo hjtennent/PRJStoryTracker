@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { View, Text, Button, TextInput } from "react-native"
 import styles from "../styles/SignUp"
 import auth from "@react-native-firebase/auth"
+import { addUser } from "../../helper/firebase/firebase" 
 
 
 const SignUp = (props) => {
@@ -11,7 +12,10 @@ const SignUp = (props) => {
 
   const handleSignUp = () => {
     auth().createUserWithEmailAndPassword(email, password)
-      .then(() => props.navigation.navigate('Home'))
+      .then((userCredential) => {
+        addUser(userCredential.user.uid, email)
+        props.navigation.navigate('Home')
+      })
       .catch(error => setErrorMsg(error.message))
   }
 

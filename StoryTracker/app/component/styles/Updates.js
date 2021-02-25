@@ -19,36 +19,14 @@ const styles = StyleSheet.create({
   similarStoriesContainer: {
     flex: 1,
   },
-  similarStoryBox: {
-    flexDirection: 'row',
+  noStoriesContainer: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: 'lightgrey',
-    marginBottom: 20,
-    alignItems: 'center',
-    padding: 10,
+    justifyContent: "center",
+    alignItems: "center"
   },
-  allStoryBox: {
-    flexDirection: 'row',
-    flex: 1,
-    width: '100%',
-    borderWidth: 1,
-    borderColor: 'lightgrey',
-    marginBottom: 20,
-    alignItems: 'center',
-    padding: 10,
+  noStoriesText: {
+    fontStyle: 'italic'
   },
-  headlineContainer: {
-    flex: 0.8,
-  },
-  similarityLabelContainer: {
-    flex: 0.2,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  storyText: {
-    fontFamily: 'Oxygen-Regular'
-  }
 });
 
 export default styles;

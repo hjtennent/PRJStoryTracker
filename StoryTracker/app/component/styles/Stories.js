@@ -22,10 +22,19 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   headlineContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  headline: {
     flex: 0.8,
+    justifyContent: 'center',
+  },
+  updatesButton: {
+    flex: 0.3,
   },
   storyText: {
-    fontFamily: 'Oxygen-Regular'
+    fontFamily: 'Oxygen-Regular',
   }
 });
 

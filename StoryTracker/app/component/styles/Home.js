@@ -22,6 +22,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: '100%',
   },
+  alreadyFollowedStoryContainer: {
+    flex: 1,
+    width: '80%',
+  },
+  alreadyFollowedText: {
+    paddingBottom: 20,
+  },
   mainText: {
     fontSize: 18,
     color: "white",

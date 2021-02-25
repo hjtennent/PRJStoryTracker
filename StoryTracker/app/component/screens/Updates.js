@@ -9,6 +9,7 @@ import {
   Linking,
   ScrollView
 } from 'react-native';
+import StoryBox from '../common/StoryBox';
 import styles from '../styles/Updates';
 import Loading from './Loading';
 
@@ -16,10 +17,15 @@ const Updates = ({route, navigation}) => {
   const [isLoading, setIsLoading] = useState(false)
   const { storyUpdates } = route.params
 
-  const similarStories = Object.entries(storyUpdates).filter((key, value) => key[1]['score'] > 0)
-  console.log(similarStories)
-  const otherStories = Object.entries(storyUpdates).filter((key, value) => key[1]['score'] == 0)
-  console.log(otherStories)
+  const similarStories = []
+  const otherStories = []
+  Object.entries(storyUpdates).forEach(item => {
+    if (item[1]['score'] > 0) {
+      similarStories.push(item)
+    } else {
+      otherStories.push(item)
+    }
+  });
 
   if (isLoading) {
     return (
@@ -37,33 +43,30 @@ const Updates = ({route, navigation}) => {
         <View style={styles.container}>
           <Text style={styles.titleText}>Most similar stories: </Text>
           <View style={styles.similarStoriesContainer}>
-              {similarStories.map(story => {
+            {similarStories.length > 0 ?
+              similarStories.map((similarStory,i) => {
                 return (
-                  <View style={styles.similarStoryBox}>
-                    <View style={styles.headlineContainer}>
-                      <TouchableOpacity key={story[0]} onPress={() => openLink(story[1]['url'])}>
-                        <Text style={styles.storyText}>{story[0]}</Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.similarityLabelContainer}>
-                      <Text style={styles.storyText}>{story[1]['score']}</Text>
-                    </View>
-                  </View>
+                  <StoryBox key={i} story={similarStory} onPress={() => openLink(similarStory[1]['url'])}/>
                 )
-              })}
+              })
+              :
+              <View style={styles.noStoriesContainer}>
+                <Text style={styles.noStoriesText}>No similar stories found.</Text>
+              </View>
+            }
           </View>
           <Text style={styles.titleText}>Other stories:</Text>
-          {otherStories.map(story => {
-            return (
-              <>
-                <View style={styles.allStoryBox}>
-                  <TouchableOpacity key={story[0]} onPress={() => openLink(story[1]['url'])}>
-                    <Text key={story[0] + 'all'} style={styles.storyText}>{story[0]}</Text>
-                  </TouchableOpacity>
-                </View>
-              </>
-            )
-          })}
+          {otherStories.length > 0 ?
+            otherStories.map((otherStory,i) => {
+              return (
+                <StoryBox key={i} story={otherStory} onPress={() => openLink(otherStory[1]['url'])}/>
+              )
+            })
+            :
+            <View style={styles.noStoriesContainer}>
+              <Text style={styles.noStoriesText}>No other stories found.</Text>
+            </View>
+          }
         </View>
       </ScrollView>
     </>

@@ -3,9 +3,7 @@ import {
   Linking,
   View,
   Text,
-  Button,
-  TextInput,
-  Alert,
+  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import styles from '../styles/Stories';
@@ -15,6 +13,7 @@ import Loading from './Loading';
 import StoryBox from "../common/StoryBox"
 import { getStoryObject } from '../../helper/models/StoryModel';
 import { getStoryUpdates } from '../../helper/api/api';
+import StoryButton from '../common/StoryButton';
 
 const Stories = (props) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -54,6 +53,7 @@ const Stories = (props) => {
   getUpdatesButton = (id, keywords, test) => {
     setIsLoading(true)
     getStoryUpdates(id, keywords, test).then((response) => {
+      console.log(response)
       props.navigation.navigate("Updates", {
         storyUpdates: response["SIMILARITIES"]
       })
@@ -70,18 +70,20 @@ const Stories = (props) => {
         <View style={styles.welcomeContainer}>
           <Text style={styles.mainText}>Your Followed Stories</Text>
         </View>
-        <View style={styles.storyContainer}>
+        <ScrollView style={styles.storyContainer}>
           {followedStories !== {} ?
             followedStories.map((story,i) => {
               return (
                 <View style={styles.similarStoryBox} key={i}>
                   <View style={styles.headlineContainer}>
-                    <TouchableOpacity onPress={() => openLink(story['url'])}>
-                      <Text style={styles.storyText}>{story['title']}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => getUpdatesButton(story['id'], story['keywords'], true)}>
-                      <Text styles={styles.storyText}>Get Updates</Text>
-                    </TouchableOpacity>
+                    <View style={styles.headline}>
+                      <TouchableOpacity onPress={() => openLink(story['url'])}>
+                        <Text style={styles.storyText}>{story['title']}</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.updatesButton}>
+                      <StoryButton makeHighlight={false} text={"Get Updates"} onPress={() => getUpdatesButton(story['id'], story['keywords'], true)} smallText={true} />
+                    </View>
                   </View>
                 </View>
               )
@@ -91,7 +93,7 @@ const Stories = (props) => {
               <Text>No followed stories.</Text>
             </>
           }
-        </View>
+        </ScrollView>
       </View>
     </>
   )

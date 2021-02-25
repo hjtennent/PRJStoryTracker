@@ -17,6 +17,7 @@ const getStoryDetails = (url) => {
 }
 
 const getStoryUpdates = (id, topic, test) => {
+  console.log("ID: ", id)
   console.log("Topic: ", topic)
   console.log("Test: ", test)
   return axios({
