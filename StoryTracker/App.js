@@ -17,7 +17,8 @@ import Loading from './app/component/screens/Loading';
 import LogIn from './app/component/screens/LogIn';
 import SignUp from './app/component/screens/SignUp';
 import Updates from './app/component/screens/Updates';
-import Stories from './app/component/screens/Stories'
+import Stories from './app/component/screens/Stories';
+import History from './app/component/screens/History';
 import auth from "@react-native-firebase/auth"
 
 const Stack = createStackNavigator();
@@ -51,6 +52,7 @@ const App: () => React$Node = () => {
       <Stack.Navigator>
         <Stack.Screen name="Stories" component={Stories} />
         <Stack.Screen name="Updates" component={Updates} />
+        <Stack.Screen name="History" component={History} />
       </Stack.Navigator>
     )
   }

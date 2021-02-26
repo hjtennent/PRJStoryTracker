@@ -12,10 +12,13 @@ import {
 import StoryBox from '../common/StoryBox';
 import styles from '../styles/Updates';
 import Loading from './Loading';
+import { addStoryLinkToUserHistory } from '../../helper/firebase/firebase'
+import auth from '@react-native-firebase/auth'
 
 const Updates = ({route, navigation}) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { storyUpdates } = route.params
+  const user = auth().currentUser
+  const { storyID, storyUpdates } = route.params
 
   const similarStories = []
   const otherStories = []
@@ -34,6 +37,8 @@ const Updates = ({route, navigation}) => {
   }
 
   openLink = (link) => {
+    console.log("In openLink")
+    addStoryLinkToUserHistory(user.uid, storyID, link)
     Linking.openURL(link)
   }
 

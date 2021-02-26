@@ -33,6 +33,9 @@ const styles = StyleSheet.create({
   updatesButton: {
     flex: 0.3,
   },
+  buttonContainer: {
+    marginBottom: 10,
+  },
   storyText: {
     fontFamily: 'Oxygen-Regular',
   }

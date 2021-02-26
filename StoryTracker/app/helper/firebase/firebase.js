@@ -1,8 +1,12 @@
 import database from '@react-native-firebase/database'
 
+const addStoryLinkToUserHistory = (uid, storyID, link) => {
+  console.log("In add story link to user history")
+  database().ref(`/users/${uid}/history/${storyID}/`).push(link)
+    .catch(error => console.log(error))
+}
+
 const addUser = (uid, email) => {
-  console.log(uid)
-  console.log(email)
   database().ref(`/users/`).child(uid).set({
     email
   }).catch(error => console.log(error))
@@ -10,7 +14,8 @@ const addUser = (uid, email) => {
 
 const addTopic = async (userID, url, title, authors, keywords, date) => {
   alreadyFollowed = false
-  result = await database().ref(`/users/${userID}/stories/`).once('value').then(snapshot => {
+  console.log(userID)
+  result = await database().ref('/users/').child(userID).child('/stories/').once('value').then(snapshot => {
     followedStories = snapshot.val()
     console.log("URL: ", url)
     if (followedStories) {
@@ -51,5 +56,6 @@ const addTopic = async (userID, url, title, authors, keywords, date) => {
 
 export {
   addTopic,
-  addUser
+  addUser,
+  addStoryLinkToUserHistory
 }

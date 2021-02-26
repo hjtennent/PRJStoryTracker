@@ -69,7 +69,7 @@ const Home = (props) => {
       getStoryUpdates(savedStoryID, savedStoryTopic, test).then(response => {
         console.log("Home.js", response["SIMILARITIES"])
         props.navigation.navigate("Updates", {
-          originalStory: story,
+          storyID: savedStoryID,
           storyUpdates: response["SIMILARITIES"]
         })
         setIsLoading(false)
@@ -115,23 +115,8 @@ const Home = (props) => {
             <Text style={styles.storyInfo}>Author: {story['authors']}</Text>
             <Text style={styles.storyDescription}>Description: {story['story']}...</Text>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={isStoryLoaded ? styles.orangeFollowStoryButton : styles.greenFollowStoryButton}
-                onPress={() => getUpdatesButton()}>
-                <Text style={styles.buttonText}>Get Updates</Text>
-              </TouchableOpacity>
               <StoryButton makeHighlight={!isStoryLoaded} text={"Get Updates"} onPress={() => getUpdatesButton()} />
-              <TouchableOpacity
-                style={styles.greenFollowStoryButton}
-                onPress={() => getUpdatesButton(true)}>
-                  <Text style={styles.buttonText}>Get Test Updates</Text>
-              </TouchableOpacity>
               <StoryButton makeHighlight={false} text={"Get Test Updates"} onPress={() => getUpdatesButton(true)} />
-              <TouchableOpacity 
-                style={styles.greenFollowStoryButton}
-                onPress={() => cancel()}>
-                  <Text style={styles.buttonText}>Cancel</Text>
-              </TouchableOpacity>
               <StoryButton makeHighlight={false} text={"Cancel"} onPress={() => cancel()} />
             </View>
           </View>

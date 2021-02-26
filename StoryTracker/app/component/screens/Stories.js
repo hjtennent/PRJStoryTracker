@@ -55,12 +55,19 @@ const Stories = (props) => {
     getStoryUpdates(id, keywords, test).then((response) => {
       console.log(response)
       props.navigation.navigate("Updates", {
+        storyID: id,
         storyUpdates: response["SIMILARITIES"]
       })
       setIsLoading(false)
     }).catch(error => {
       console.log(error)
       setIsLoading(false)
+    })
+  }
+
+  showStoryHistory = (storyID) => {
+    props.navigation.navigate("History", {
+      storyID
     })
   }
 
@@ -82,7 +89,12 @@ const Stories = (props) => {
                       </TouchableOpacity>
                     </View>
                     <View style={styles.updatesButton}>
-                      <StoryButton makeHighlight={false} text={"Get Updates"} onPress={() => getUpdatesButton(story['id'], story['keywords'], true)} smallText={true} />
+                      <View style={styles.buttonContainer}>
+                        <StoryButton makeHighlight={false} text={"Get Updates"} 
+                          onPress={() => getUpdatesButton(story['id'], story['keywords'], true)} smallText={true} />
+                      </View>
+                      <StoryButton makeHighlight={false} text={"View History"} 
+                        onPress={() => showStoryHistory(story['id'])} smallText={true} />
                     </View>
                   </View>
                 </View>
