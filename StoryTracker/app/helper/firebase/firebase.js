@@ -7,6 +7,7 @@ const addStoryLinkToUserHistory = (uid, storyID, link) => {
 }
 
 const addUser = (uid, email) => {
+  console.log(database().ref('/users/'))
   database().ref(`/users/`).child(uid).set({
     email
   }).catch(error => console.log(error))

@@ -26,18 +26,6 @@ const Tab = createBottomTabNavigator();
 
 const App: () => React$Node = () => {
 
-  const [isSignedIn, setIsSignedIn] = useState(false)
-
-  // Handle user state changes
-  function onAuthStateChanged(user) {
-    user ? setIsSignedIn(true) : setIsSignedIn(false)
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
   function HomeStackNavigator() {
     return (
       <Stack.Navigator>
@@ -57,20 +45,30 @@ const App: () => React$Node = () => {
     )
   }
 
+  function Auth() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Login" component={LogIn} />
+      </Stack.Navigator>
+    )
+  }
+
+  function LandingStack() {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeStackNavigator} />
+        <Tab.Screen name="Stories" component={StoriesStackNavigator} />
+      </Tab.Navigator>
+    )
+  }
+
   return (
     <NavigationContainer>
-      { isSignedIn ? (
-        <Tab.Navigator>
-          <Tab.Screen name="Home" component={HomeStackNavigator} />
-          <Tab.Screen name="Stories" component={StoriesStackNavigator} />
-        </Tab.Navigator>
-      ) : (
-        <Stack.Navigator>
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="Login" component={LogIn} />
-        </Stack.Navigator>
-      )}
-      
+      <Stack.Navigator initialRouteName="Auth">
+        <Stack.Screen name="Auth" component={Auth} options={{headerShown: false}} />
+        <Stack.Screen name="LandingStack" component={LandingStack} options={{headerShown: false}} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };

@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "74973818089",
+    "firebase_url": "https://prjstorytracker-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "prjstorytracker",
     "storage_bucket": "prjstorytracker.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:74973818089:android:ba03ea3b946d2cd8f09478",
+        "mobilesdk_app_id": "1:74973818089:android:0733ba2d58e449def09478",
         "android_client_info": {
           "package_name": "com.storytracker"
         }

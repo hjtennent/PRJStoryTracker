@@ -14,7 +14,7 @@ const SignUp = (props) => {
     auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         addUser(userCredential.user.uid, email)
-        props.navigation.navigate('Home')
+        props.navigation.replace('LandingStack')
       })
       .catch(error => setErrorMsg(error.message))
   }

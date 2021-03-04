@@ -33,7 +33,7 @@ const Home = (props) => {
 
   const logout = () => {
     auth().signOut()
-      .then(() => props.navigation.navigate('Login'))
+      .then(() => props.navigation.replace('Auth'))
   }
 
   const retrieveStory = () => {
