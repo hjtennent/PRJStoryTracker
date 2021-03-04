@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 import styles from '../styles/Home';
 import { getStoryDetails, getStoryUpdates } from "../../helper/api/api";
-import { addTopic } from "../../helper/firebase/firebase";
+import { addTopic, pushFCMTokenToFirebase } from "../../helper/firebase/firebase";
 import auth from "@react-native-firebase/auth"
+import messaging from "@react-native-firebase/messaging"
 import Loading from './Loading';
 import { getStoryObject } from "../../helper/models/StoryModel"
 import StoryButton from '../common/StoryButton';
@@ -29,6 +30,18 @@ const Home = (props) => {
     return (
       <><Loading /></>
     )
+  }
+
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+      messaging().getToken().then(token => pushFCMTokenToFirebase(user.uid, token))
+    }
   }
 
   const logout = () => {
@@ -88,6 +101,8 @@ const Home = (props) => {
   const navigateStoriesTab = () => {
     props.navigation.navigate("Stories")
   }
+
+  requestUserPermission();
 
   return (
     <>

@@ -19,12 +19,20 @@ import SignUp from './app/component/screens/SignUp';
 import Updates from './app/component/screens/Updates';
 import Stories from './app/component/screens/Stories';
 import History from './app/component/screens/History';
-import auth from "@react-native-firebase/auth"
+import messaging from "@react-native-firebase/messaging";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const App: () => React$Node = () => {
+
+  //handle foregroud notifications
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+    return unsubscribe;
+  }, []);
 
   function HomeStackNavigator() {
     return (
