@@ -15,6 +15,7 @@ import messaging from "@react-native-firebase/messaging"
 import Loading from './Loading';
 import { getStoryObject } from "../../helper/models/StoryModel"
 import StoryButton from '../common/StoryButton';
+import { getData, clearData } from "../../helper/storage/storage";
 
 const Home = (props) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -24,6 +25,7 @@ const Home = (props) => {
   const [storyLink, onEnterStoryLink] = React.useState("Enter story link...")
   const [savedStoryID, setSavedStoryID] = React.useState("")
   const [savedStoryTopic, setSavedStoryTopic] = React.useState([])
+  const [openedNotification, setOpenedNotification] = React.useState()
   const user = auth().currentUser
 
   if (isLoading) {
@@ -44,7 +46,28 @@ const Home = (props) => {
     }
   }
 
+  messaging().onNotificationOpenedApp(async remoteMessage => {
+    setOpenedNotification(remoteMessage)
+  });
+
+  const displaySavedNotifications = async () => {
+    const notifications = await getData('messages')
+    console.log("Checking notifications....")
+    if (notifications != null) {
+      //TODO: Display notifications for user
+      console.log(notifications)
+      notifications.forEach(notification => {
+        const parsedNotification = JSON.parse(notification)
+        console.log(parsedNotification['notification']['title'])
+        Alert.alert(parsedNotification['notification']['title'], parsedNotification['notification']['body'])
+      })
+    }
+    clearData(); //get rid of the saved notifications once they've been shown to the user
+  }
+
   const logout = () => {
+    //Clear AsyncStorage
+    clearData();
     auth().signOut()
       .then(() => props.navigation.replace('Auth'))
   }
@@ -103,6 +126,7 @@ const Home = (props) => {
   }
 
   requestUserPermission();
+  displaySavedNotifications();
 
   return (
     <>

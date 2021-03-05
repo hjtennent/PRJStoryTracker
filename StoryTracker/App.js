@@ -7,19 +7,17 @@
  */
 
 import React, { useState, useEffect } from 'react';
-
 import Home from './app/component/screens/Home';
-import styles from './app/component/styles/App';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Loading from './app/component/screens/Loading';
 import LogIn from './app/component/screens/LogIn';
 import SignUp from './app/component/screens/SignUp';
 import Updates from './app/component/screens/Updates';
 import Stories from './app/component/screens/Stories';
 import History from './app/component/screens/History';
 import messaging from "@react-native-firebase/messaging";
+import { Alert } from 'react-native';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -29,7 +27,9 @@ const App: () => React$Node = () => {
   //handle foregroud notifications
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      const message = JSON.stringify(remoteMessage)
+      console.log("A new FCM message has arrived: ", message)
+      Alert.alert(remoteMessage['notification']['title'], remoteMessage['notification']['body'])
     });
     return unsubscribe;
   }, []);
