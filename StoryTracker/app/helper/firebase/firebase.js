@@ -21,10 +21,10 @@ const addUser = (uid, email) => {
 }
 
 const addTopic = async (userID, url, title, authors, keywords, date) => {
-  alreadyFollowed = false
+  var alreadyFollowed = false
   console.log(userID)
-  result = await database().ref('/users/').child(userID).child('/stories/').once('value').then(snapshot => {
-    followedStories = snapshot.val()
+  const result = await database().ref('/users/').child(userID).child('/stories/').once('value').then(snapshot => {
+    const followedStories = snapshot.val()
     console.log("URL: ", url)
     if (followedStories) {
       Object.entries(followedStories).forEach((item, key) => {

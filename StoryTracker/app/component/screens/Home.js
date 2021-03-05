@@ -54,12 +54,12 @@ const Home = (props) => {
     console.log(storyLink)
     getStoryDetails(storyLink).then(async (response) => {
       console.log("Home.js: " + response["URL"])
-      storyObject = getStoryObject(response["ID"], response["URL"], response["TITLE"], response["STORY"], response["AUTHORS"], response["DATE"], response["KEYWORDS"])
+      const storyObject = getStoryObject(response["ID"], response["URL"], response["TITLE"], response["STORY"], response["AUTHORS"], response["DATE"], response["KEYWORDS"])
       setStory(storyObject)
       setIsStoryLoaded(true)
       //Call Firebase to save topic to database
-      firebaseResponse = await addTopic(user.uid, storyObject["url"], storyObject["title"], storyObject["authors"], storyObject["keywords"], storyObject["date"])
-      console.log(firebaseResponse)
+      const firebaseResponse = await addTopic(user.uid, storyObject["url"], storyObject["title"], storyObject["authors"], storyObject["keywords"], storyObject["date"])
+      console.log("Response: ", firebaseResponse)
       setIsStoryFollowed(firebaseResponse.alreadyFollowed)
       if (firebaseResponse.alreadyFollowed == false) {
         setSavedStoryID(firebaseResponse.key)
