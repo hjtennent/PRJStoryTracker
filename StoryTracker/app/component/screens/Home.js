@@ -58,8 +58,18 @@ const Home = (props) => {
       console.log(notifications)
       notifications.forEach(notification => {
         const parsedNotification = JSON.parse(notification)
-        console.log(parsedNotification['notification']['title'])
-        Alert.alert(parsedNotification['notification']['title'], parsedNotification['notification']['body'])
+        const notificationData = parsedNotification['data']
+        const dictionary = Object.entries(notificationData)
+        Alert.alert(parsedNotification['notification']['title'], parsedNotification['notification']['body'],
+        [
+          {
+            text: 'Read',
+            onPress: () => props.navigation.navigate('Stories', {
+              screen: 'Updates',
+              params: { storyID: dictionary[0][0], storyUpdates: JSON.parse(dictionary[0][1]), fromNotification: true }
+            })
+          }
+        ])
       })
     }
     clearData(); //get rid of the saved notifications once they've been shown to the user

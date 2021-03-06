@@ -18,17 +18,28 @@ import auth from '@react-native-firebase/auth'
 const Updates = ({route, navigation}) => {
   const [isLoading, setIsLoading] = useState(false)
   const user = auth().currentUser
-  const { storyID, storyUpdates } = route.params
+  const { storyID, storyUpdates, fromNotification } = route.params
 
   const similarStories = []
   const otherStories = []
-  Object.entries(storyUpdates).forEach(item => {
-    if (item[1]['score'] > 0) {
-      similarStories.push(item)
-    } else {
-      otherStories.push(item)
-    }
-  });
+  if (fromNotification) {
+    console.log(storyUpdates)
+    Object.entries(storyUpdates).forEach(item => {
+      if (item[1] > 0) {
+        similarStories.push(item)
+      } else {
+        otherStories.push(item)
+      }
+    })
+  } else {
+    Object.entries(storyUpdates).forEach(item => {
+      if (item[1]['score'] > 0) {
+        similarStories.push(item)
+      } else {
+        otherStories.push(item)
+      }
+    });
+  }
 
   if (isLoading) {
     return (
@@ -51,7 +62,9 @@ const Updates = ({route, navigation}) => {
             {similarStories.length > 0 ?
               similarStories.map((similarStory,i) => {
                 return (
-                  <StoryBox key={i} story={similarStory} onPress={() => openLink(similarStory[1]['url'])}/>
+                  <StoryBox key={i} url={fromNotification ? similarStory[0] : similarStory[1]['url']} 
+                            similarity={fromNotification ? similarStory[1] : similarStory[1]['score']}
+                            onPress={() => openLink(fromNotification ? similarStory[0] : similarStory[1]['url'])} />
                 )
               })
               :
@@ -64,7 +77,9 @@ const Updates = ({route, navigation}) => {
           {otherStories.length > 0 ?
             otherStories.map((otherStory,i) => {
               return (
-                <StoryBox key={i} story={otherStory} onPress={() => openLink(otherStory[1]['url'])}/>
+                <StoryBox key={i} url={fromNotification ? otherStory[0] : otherStory[1]['url']} 
+                          similarity={fromNotification ? otherStory[1] : otherStory[1]['score']}
+                          onPress={() => openLink(fromNotification ? otherStory[0] : otherStory[1]['url'])} />
               )
             })
             :
