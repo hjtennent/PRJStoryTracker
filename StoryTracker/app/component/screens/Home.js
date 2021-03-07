@@ -60,17 +60,21 @@ const Home = (props) => {
     if (notifications != null) {
       //TODO: Display notifications for user
       console.log(notifications)
-      notifications.forEach(notification => {
+      notifications.forEach(async notification => {
         const parsedNotification = JSON.parse(notification)
+        console.log(parsedNotification)
         const notificationData = parsedNotification['data']
         const dictionary = Object.entries(notificationData)
-        Alert.alert(parsedNotification['notification']['title'], parsedNotification['notification']['body'],
+        console.log(dictionary)
+        const storyID = dictionary[0][0]
+        const headline = await getStoryHeadlineFromID(user.uid, storyID)
+        Alert.alert(parsedNotification['notification']['title'], parsedNotification['notification']['body'] + "\n" + headline,
         [
           {
             text: 'Read',
             onPress: () => props.navigation.navigate('Stories', {
               screen: 'Updates',
-              params: { storyID: dictionary[0][0], storyUpdates: JSON.parse(dictionary[0][1]), fromNotification: true }
+              params: { storyID: storyID, storyUpdates: JSON.parse(dictionary[0][1]), fromNotification: true }
             })
           }
         ])
