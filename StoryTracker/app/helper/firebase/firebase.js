@@ -1,5 +1,17 @@
 import database from '@react-native-firebase/database'
 
+const getStoryHeadlineFromID = async (uid, storyID) => {
+  console.log("In getStoryHeadlineFromID")
+  const result = await database().ref(`/users/${uid}/stories/${storyID}/`)
+    .once('value')
+    .then(snapshot => {
+      console.log("Snapshot: ", snapshot.val())
+      return snapshot.val()
+    })
+    .catch(error => console.log(error))
+  return result["title"]
+}
+
 const pushFCMTokenToFirebase = (uid, token) => {
   console.log(token)
   database().ref(`/users/${uid}`).update({
@@ -14,7 +26,6 @@ const addStoryLinkToUserHistory = (uid, storyID, link) => {
 }
 
 const addUser = (uid, email) => {
-  console.log(database().ref('/users/'))
   database().ref(`/users/`).child(uid).set({
     email
   }).catch(error => console.log(error))
@@ -66,5 +77,6 @@ export {
   addTopic,
   addUser,
   addStoryLinkToUserHistory,
-  pushFCMTokenToFirebase
+  pushFCMTokenToFirebase,
+  getStoryHeadlineFromID
 }

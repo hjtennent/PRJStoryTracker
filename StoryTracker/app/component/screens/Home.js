@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import styles from '../styles/Home';
 import { getStoryDetails, getStoryUpdates } from "../../helper/api/api";
-import { addTopic, pushFCMTokenToFirebase } from "../../helper/firebase/firebase";
+import { addTopic, pushFCMTokenToFirebase, getStoryHeadlineFromID } from "../../helper/firebase/firebase";
 import auth from "@react-native-firebase/auth"
 import messaging from "@react-native-firebase/messaging"
 import Loading from './Loading';
@@ -46,9 +46,13 @@ const Home = (props) => {
     }
   }
 
-  messaging().onNotificationOpenedApp(async remoteMessage => {
-    setOpenedNotification(remoteMessage)
-  });
+  useEffect(() => {
+    const unsubscribe = messaging().onNotificationOpenedApp(async remoteMessage => {
+      setOpenedNotification(remoteMessage)
+    });
+    return unsubscribe;
+  }, []);
+
 
   const displaySavedNotifications = async () => {
     const notifications = await getData('messages')

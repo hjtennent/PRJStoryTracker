@@ -17,7 +17,9 @@ import Updates from './app/component/screens/Updates';
 import Stories from './app/component/screens/Stories';
 import History from './app/component/screens/History';
 import messaging from "@react-native-firebase/messaging";
+import auth from "@react-native-firebase/auth";
 import { Alert } from 'react-native';
+import { getStoryHeadlineFromID } from './app/helper/firebase/firebase'; 
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,8 +30,15 @@ const App: () => React$Node = () => {
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       const message = JSON.stringify(remoteMessage)
-      console.log("A new FCM message has arrived: ", message)
-      Alert.alert(remoteMessage['notification']['title'], remoteMessage['notification']['body'])
+      Alert.alert("A new FCM message has arrived: ", message)
+      const notificationData = Object.entries(remoteMessage['data'])
+      console.log("NotificationData 00: ", notificationData[0][0])
+      // console.log("User ID: ", user.uid)
+      const headline = await getStoryHeadlineFromID(auth().currentUser.uid, notificationData[0][0])
+      console.log("In onMessage listener in Home.js")
+      console.log(headline)
+      Alert.alert(remoteMessage['notification']['title'], "There are new updates for: \n" +
+            headline + "\n Check it out in the Stories tab.")
     });
     return unsubscribe;
   }, []);
