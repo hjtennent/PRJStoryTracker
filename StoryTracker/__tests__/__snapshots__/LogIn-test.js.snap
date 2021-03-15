@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <Text>
+    Log In
+  </Text>
+  <TextInput
+    allowFontScaling={true}
+    autoCapitalize="none"
+    onChangeText={[Function]}
+    placeholder="Email"
+    rejectResponderTermination={true}
+    style={
+      Object {
+        "borderBottomWidth": 1,
+        "borderColor": "grey",
+        "marginTop": 8,
+        "width": "90%",
+      }
+    }
+    underlineColorAndroid="transparent"
+    value=""
+  />
+  <TextInput
+    allowFontScaling={true}
+    autoCapitalize="none"
+    onChangeText={[Function]}
+    placeholder="Password"
+    rejectResponderTermination={true}
+    secureTextEntry={true}
+    style={
+      Object {
+        "borderBottomWidth": 1,
+        "borderColor": "grey",
+        "marginTop": 8,
+        "width": "90%",
+      }
+    }
+    underlineColorAndroid="transparent"
+    value=""
+  />
+  <View
+    accessibilityRole="button"
+    accessibilityState={Object {}}
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "margin": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        Log In
+      </Text>
+    </View>
+  </View>
+  <View>
+    <Text>
+      Don't have an account?
+      <Text
+        onPress={[Function]}
+        style={
+          Object {
+            "color": "red",
+          }
+        }
+      >
+        Sign Up
+      </Text>
+    </Text>
+  </View>
+</View>
+`;

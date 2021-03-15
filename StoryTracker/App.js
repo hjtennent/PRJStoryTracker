@@ -11,15 +11,15 @@ import Home from './app/component/screens/Home';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import LogIn from './app/component/screens/LogIn';
-import SignUp from './app/component/screens/SignUp';
 import Updates from './app/component/screens/Updates';
 import Stories from './app/component/screens/Stories';
 import History from './app/component/screens/History';
 import messaging from "@react-native-firebase/messaging";
 import auth from "@react-native-firebase/auth";
 import { Alert } from 'react-native';
-import { getStoryHeadlineFromID } from './app/helper/firebase/firebase'; 
+import { getStoryHeadlineFromID } from './app/helper/firebase/firebase';
+import Auth from './app/component/navigators/Auth';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -62,20 +62,24 @@ const App: () => React$Node = () => {
     )
   }
 
-  function Auth() {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Login" component={LogIn} />
-      </Stack.Navigator>
-    )
-  }
-
   function LandingStack() {
     return (
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeStackNavigator} />
-        <Tab.Screen name="Stories" component={StoriesStackNavigator} />
+      <Tab.Navigator 
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            if (route.name === 'HomeStack') {
+              return <Icon name="home" size={30} color={color} />;
+            } else if (route.name === 'StoriesStack') {
+              return <Icon name="book" size={30} color={color} />;
+            }
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: '#4D8E6B',
+          inactiveTintColor: 'gray',
+        }}>
+        <Tab.Screen name="HomeStack" component={HomeStackNavigator} />
+        <Tab.Screen name="StoriesStack" component={StoriesStackNavigator} />
       </Tab.Navigator>
     )
   }

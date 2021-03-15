@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
-  Button,
-  TextInput,
-  Alert,
-  TouchableOpacity,
+  AppState,
   Linking,
   ScrollView
 } from 'react-native';
@@ -18,28 +15,17 @@ import auth from '@react-native-firebase/auth'
 const Updates = ({route, navigation}) => {
   const [isLoading, setIsLoading] = useState(false)
   const user = auth().currentUser
-  const { storyID, storyUpdates, fromNotification } = route.params
+  const { storyID, storyUpdates } = route.params
 
   const similarStories = []
   const otherStories = []
-  if (fromNotification) {
-    console.log(storyUpdates)
-    Object.entries(storyUpdates).forEach(item => {
-      if (item[1] > 0) {
-        similarStories.push(item)
-      } else {
-        otherStories.push(item)
-      }
-    })
-  } else {
-    Object.entries(storyUpdates).forEach(item => {
-      if (item[1]['score'] > 0) {
-        similarStories.push(item)
-      } else {
-        otherStories.push(item)
-      }
-    });
-  }
+  Object.entries(storyUpdates).forEach(item => {
+    if (item[1]['score'] > 0) {
+      similarStories.push(item)
+    } else {
+      otherStories.push(item)
+    }
+  });
 
   if (isLoading) {
     return (
@@ -62,9 +48,11 @@ const Updates = ({route, navigation}) => {
             {similarStories.length > 0 ?
               similarStories.map((similarStory,i) => {
                 return (
-                  <StoryBox key={i} url={fromNotification ? similarStory[0] : similarStory[1]['url']} 
-                            similarity={fromNotification ? similarStory[1] : similarStory[1]['score']}
-                            onPress={() => openLink(fromNotification ? similarStory[0] : similarStory[1]['url'])} />
+                  <StoryBox key={i} 
+                            text={similarStory[0]}
+                            url={similarStory[1]['url']} 
+                            similarity={similarStory[1]['score']}
+                            onPress={() => openLink(similarStory[1]['url'])} />
                 )
               })
               :
@@ -77,9 +65,11 @@ const Updates = ({route, navigation}) => {
           {otherStories.length > 0 ?
             otherStories.map((otherStory,i) => {
               return (
-                <StoryBox key={i} url={fromNotification ? otherStory[0] : otherStory[1]['url']} 
-                          similarity={fromNotification ? otherStory[1] : otherStory[1]['score']}
-                          onPress={() => openLink(fromNotification ? otherStory[0] : otherStory[1]['url'])} />
+                <StoryBox key={i} 
+                          text={otherStory[0]}
+                          url={otherStory[1]['url']} 
+                          similarity={otherStory[1]['score']}
+                          onPress={() => openLink(otherStory[1]['url'])} />
               )
             })
             :

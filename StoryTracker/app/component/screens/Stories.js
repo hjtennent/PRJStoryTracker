@@ -15,7 +15,7 @@ import { getStoryObject } from '../../helper/models/StoryModel';
 import { getStoryUpdates } from '../../helper/api/api';
 import StoryButton from '../common/StoryButton';
 
-const Stories = (props) => {
+const Stories = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState(false)
   const user = auth().currentUser
   const [followedStories, setFollowedStories] = useState([])
@@ -26,17 +26,19 @@ const Stories = (props) => {
       .on('value', snapshot => {
         fetchedStories = snapshot.val()
         stories = []
-        Object.entries(fetchedStories).forEach(item => {
-          object = getStoryObject(item[0], item[1]["url"], item[1]["title"], "", item[1]["authors"], item[1]["date"], item[1]["topic"])
-          stories.push(object)
-        })
+        if (fetchedStories != null) {
+          Object.entries(fetchedStories).forEach(item => {
+            object = getStoryObject(item[0], item[1]["url"], item[1]["title"], "", item[1]["authors"], item[1]["date"], item[1]["topic"])
+            stories.push(object)
+          })
+        }
         setFollowedStories(stories);
       });
 
     // Stop listening for updates when no longer required
     return () =>
       database()
-        .ref(`/users/${user.uid}`)
+        .ref(`/users/${user.uid}/stories/`)
         .off('value', onValueChange);
   }, [user.uid]);
 
@@ -53,8 +55,7 @@ const Stories = (props) => {
   getUpdatesButton = (id, keywords, test) => {
     setIsLoading(true)
     getStoryUpdates(id, keywords, test).then((response) => {
-      console.log(response)
-      props.navigation.navigate("Updates", {
+      navigation.navigate("Updates", {
         storyID: id,
         storyUpdates: response["SIMILARITIES"]
       })
@@ -66,7 +67,7 @@ const Stories = (props) => {
   }
 
   showStoryHistory = (storyID) => {
-    props.navigation.navigate("History", {
+    navigation.navigate("History", {
       storyID
     })
   }
@@ -91,7 +92,7 @@ const Stories = (props) => {
                     <View style={styles.updatesButton}>
                       <View style={styles.buttonContainer}>
                         <StoryButton makeHighlight={false} text={"Get Updates"} 
-                          onPress={() => getUpdatesButton(story['id'], story['keywords'], true)} smallText={true} />
+                          onPress={() => getUpdatesButton(story['id'], story['keywords'], false)} smallText={true} />
                       </View>
                       <StoryButton makeHighlight={false} text={"View History"} 
                         onPress={() => showStoryHistory(story['id'])} smallText={true} />

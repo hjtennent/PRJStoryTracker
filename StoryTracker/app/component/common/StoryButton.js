@@ -7,6 +7,7 @@ import {
 export default StoryButton = (props) => {
   return (
     <TouchableOpacity
+      id={'storyButton'}
       style={props.makeHighlight ? styles.orangeFollowStoryButton : styles.greenFollowStoryButton}
       onPress={() => props.onPress()}>
         <Text style={props.smallText ? styles.smallButtonText : styles.buttonText}>{props.text}</Text>

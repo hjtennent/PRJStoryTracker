@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { View, TextInput, Text, Button } from "react-native"
+import { View, TextInput, Text, Button, Alert } from "react-native"
 import styles from "../styles/SignUp"
 import auth from "@react-native-firebase/auth"
 
@@ -20,11 +20,15 @@ const LogIn = (props) => {
   }, []);
 
   const handleLogIn = () => {
-    auth().signInWithEmailAndPassword(email, password)
+    if (email != "" && password != "") {
+      auth().signInWithEmailAndPassword(email, password)
       .then(() => {
         if (isSignedIn) { props.navigation.replace('LandingStack') }
       })
       .catch(error => setErrorMsg(error.message))
+    } else {
+      Alert.alert("Please enter both an email and a password to log in.");
+    }
   }
 
   return (

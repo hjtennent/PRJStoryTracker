@@ -19,32 +19,32 @@ import { getData, clearData } from "../../helper/storage/storage";
 
 const Home = (props) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [openedNotification, setOpenedNotification] = React.useState()
   const [isStoryLoaded, setIsStoryLoaded] = useState(false)
   const [isStoryFollowed, setIsStoryFollowed] = useState(false)
   const [story, setStory] = useState({})
-  const [storyLink, onEnterStoryLink] = React.useState("Enter story link...")
+  const storyInputPlaceholder = "Enter story link..."
+  const [storyLink, onEnterStoryLink] = React.useState(storyInputPlaceholder)
   const [savedStoryID, setSavedStoryID] = React.useState("")
   const [savedStoryTopic, setSavedStoryTopic] = React.useState([])
-  const [openedNotification, setOpenedNotification] = React.useState()
   const user = auth().currentUser
 
-  if (isLoading) {
-    return (
-      <><Loading /></>
-    )
-  }
-
-  const requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-  
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-      messaging().getToken().then(token => pushFCMTokenToFirebase(user.uid, token))
+  useEffect(() => {
+    const requestUserPermission = async () => {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    
+      if (enabled) {
+        console.log('Authorization status:', authStatus);
+        messaging().getToken()
+          .then(token => pushFCMTokenToFirebase(user.uid, token))
+          .catch(error => console.log(error));
+      }
     }
-  }
+    requestUserPermission();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = messaging().onNotificationOpenedApp(async remoteMessage => {
@@ -53,34 +53,10 @@ const Home = (props) => {
     return unsubscribe;
   }, []);
 
-
-  const displaySavedNotifications = async () => {
-    const notifications = await getData('messages')
-    console.log("Checking notifications....")
-    if (notifications != null) {
-      //TODO: Display notifications for user
-      console.log(notifications)
-      notifications.forEach(async notification => {
-        const parsedNotification = JSON.parse(notification)
-        console.log(parsedNotification)
-        const notificationData = parsedNotification['data']
-        const dictionary = Object.entries(notificationData)
-        console.log(dictionary)
-        const storyID = dictionary[0][0]
-        const headline = await getStoryHeadlineFromID(user.uid, storyID)
-        Alert.alert(parsedNotification['notification']['title'], parsedNotification['notification']['body'] + "\n" + headline,
-        [
-          {
-            text: 'Read',
-            onPress: () => props.navigation.navigate('Stories', {
-              screen: 'Updates',
-              params: { storyID: storyID, storyUpdates: JSON.parse(dictionary[0][1]), fromNotification: true }
-            })
-          }
-        ])
-      })
-    }
-    clearData(); //get rid of the saved notifications once they've been shown to the user
+  if (isLoading) {
+    return (
+      <><Loading /></>
+    )
   }
 
   const logout = () => {
@@ -90,28 +66,33 @@ const Home = (props) => {
       .then(() => props.navigation.replace('Auth'))
   }
 
-  const retrieveStory = () => {
-    setIsLoading(true)
-    console.log(storyLink)
-    getStoryDetails(storyLink).then(async (response) => {
-      console.log("Home.js: " + response["URL"])
-      const storyObject = getStoryObject(response["ID"], response["URL"], response["TITLE"], response["STORY"], response["AUTHORS"], response["DATE"], response["KEYWORDS"])
-      setStory(storyObject)
-      setIsStoryLoaded(true)
-      //Call Firebase to save topic to database
-      const firebaseResponse = await addTopic(user.uid, storyObject["url"], storyObject["title"], storyObject["authors"], storyObject["keywords"], storyObject["date"])
-      console.log("Response: ", firebaseResponse)
-      setIsStoryFollowed(firebaseResponse.alreadyFollowed)
-      if (firebaseResponse.alreadyFollowed == false) {
-        setSavedStoryID(firebaseResponse.key)
-        setSavedStoryTopic(firebaseResponse.keywords)
-      }
-      setIsLoading(false)
-    })
-    .catch(error => {
-      console.log(error)
-      setIsLoading(false)
-    })
+  const retrieveStory = 
+  () => {
+    if (storyLink != storyInputPlaceholder && storyLink != "") {
+      setIsLoading(true)
+      console.log(storyLink)
+      getStoryDetails(storyLink).then(async (response) => {
+        console.log("Home.js: " + response["URL"])
+        const storyObject = getStoryObject(response["ID"], response["URL"], response["TITLE"], response["STORY"], response["AUTHORS"], response["DATE"], response["KEYWORDS"])
+        setStory(storyObject)
+        setIsStoryLoaded(true)
+        //Call Firebase to save topic to database
+        const firebaseResponse = await addTopic(user.uid, storyObject["url"], storyObject["title"], storyObject["authors"], storyObject["keywords"], storyObject["date"])
+        console.log("Response: ", firebaseResponse)
+        setIsStoryFollowed(firebaseResponse.alreadyFollowed)
+        if (firebaseResponse.alreadyFollowed == false) {
+          setSavedStoryID(firebaseResponse.key)
+          setSavedStoryTopic(firebaseResponse.keywords)
+        }
+        setIsLoading(false)
+      })
+      .catch(error => {
+        console.log(error)
+        setIsLoading(false)
+      })
+    } else {
+      Alert.alert("Please enter a valid URL.")
+    }
   }
 
   const getUpdatesButton = (test=false) => {
@@ -143,7 +124,36 @@ const Home = (props) => {
     props.navigation.navigate("Stories")
   }
 
-  requestUserPermission();
+  const displaySavedNotifications = async () => {
+    const notifications = await getData('messages')
+    console.log("Checking notifications....")
+    if (notifications != null) {
+      notifications.forEach(async notification => {
+        const parsedNotification = JSON.parse(notification)
+        const dictionary = Object.entries(parsedNotification['data'])
+        console.log(dictionary)
+        const storyID = dictionary[0][0]
+        const headline = await getStoryHeadlineFromID(user.uid, storyID)
+        Alert.alert(parsedNotification['notification']['title'], parsedNotification['notification']['body'] + "\n" + headline,
+        [
+          {
+            text: 'Read',
+            onPress: () => props.navigation.navigate('StoriesStack', {
+              screen: 'Updates' ,
+              params: { storyID: storyID, storyUpdates: JSON.parse(dictionary[0][1]), fromNotification: true }
+            })
+          },
+          {
+            text: 'Cancel',
+            onPress: () => console.log("Cancelled"),
+            style: "cancel"
+          }
+        ])
+      })
+    }
+    clearData(); //get rid of the saved notifications once they've been shown to the user
+  }
+
   displaySavedNotifications();
 
   return (

@@ -9,7 +9,11 @@ const getStoryHeadlineFromID = async (uid, storyID) => {
       return snapshot.val()
     })
     .catch(error => console.log(error))
-  return result["title"]
+  if (result) {
+    return result["title"]
+  } else {
+    return ""
+  }
 }
 
 const pushFCMTokenToFirebase = (uid, token) => {

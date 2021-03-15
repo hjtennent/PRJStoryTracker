@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { View, Text, Button, TextInput } from "react-native"
+import { View, Text, Button, TextInput, Alert } from "react-native"
 import styles from "../styles/SignUp"
 import auth from "@react-native-firebase/auth"
 import { addUser } from "../../helper/firebase/firebase" 
@@ -11,12 +11,16 @@ const SignUp = (props) => {
   const [errorMsg, setErrorMsg] = useState("")
 
   const handleSignUp = () => {
-    auth().createUserWithEmailAndPassword(email, password)
+    if (email != "" && password != "") {
+      auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         addUser(userCredential.user.uid, email)
         props.navigation.replace('LandingStack')
       })
       .catch(error => setErrorMsg(error.message))
+    } else {
+      Alert.alert("Please enter both an email and a password to sign up.")
+    }
   }
 
   return (
