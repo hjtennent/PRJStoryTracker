@@ -26,17 +26,13 @@ const Tab = createBottomTabNavigator();
 
 const App: () => React$Node = () => {
 
-  //handle foregroud notifications
+  //Handle notifications when the app is in the foreground
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       const message = JSON.stringify(remoteMessage)
-      Alert.alert("A new FCM message has arrived: ", message)
       const notificationData = Object.entries(remoteMessage['data'])
-      console.log("NotificationData 00: ", notificationData[0][0])
-      // console.log("User ID: ", user.uid)
-      const headline = await getStoryHeadlineFromID(auth().currentUser.uid, notificationData[0][0])
-      console.log("In onMessage listener in Home.js")
-      console.log(headline)
+      const storyID = notificationData[0][0]
+      const headline = await getStoryHeadlineFromID(auth().currentUser.uid, storyID)
       Alert.alert(remoteMessage['notification']['title'], "There are new updates for: \n" +
             headline + "\n Check it out in the Stories tab.")
     });

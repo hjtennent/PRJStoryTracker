@@ -139,7 +139,8 @@ const Home = (props) => {
           {
             text: 'Read',
             onPress: () => props.navigation.navigate('StoriesStack', {
-              screen: 'Updates' ,
+              screen: 'Updates',
+              initial: false,
               params: { storyID: storyID, storyUpdates: JSON.parse(dictionary[0][1]), fromNotification: true }
             })
           },

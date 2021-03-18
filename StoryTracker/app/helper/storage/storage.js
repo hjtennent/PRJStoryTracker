@@ -1,17 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
-//value should be an object
 const storeData = async (value) => {
-  console.log("storeData: ", value)
   try {
     jsonValue = JSON.stringify(value)
     messages = await getData('messages')
     data = ""
     if (messages == null) {
-      console.log("messages is null")
       data = JSON.stringify([jsonValue])
     } else {
-      console.log("messages is not null")
       messages.push(jsonValue)
       data = JSON.stringify(messages)
     }

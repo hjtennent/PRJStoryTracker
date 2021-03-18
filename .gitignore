@@ -11,6 +11,15 @@
 Icon
 
 StoryTracker/ios/Pods/**
+StoryTracker/ios/Podfile
+StoryTracker/ios/Podfile.lock
+StoryTracker/ios/StoryTracker.xcodeproj/project.pbxproj
+StoryTracker/ios/StoryTracker.xcodeproj/project.xcworkspace/
+StoryTracker/ios/StoryTracker.xcworkspace/xcshareddata/
+StoryTracker/package-lock.json
+StoryTracker/package.json
+package-lock.json
+
 
 # Thumbnails
 ._*
