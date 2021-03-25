@@ -15,6 +15,7 @@ const SignUp = (props) => {
       auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         addUser(userCredential.user.uid, email)
+        Alert.alert("Privacy Notice", "We care about your privacy. This app stores your email, password, a unique ID for your device, the stories you follow, and a history of links you've clicked.")
         props.navigation.replace('LandingStack')
       })
       .catch(error => setErrorMsg(error.message))
@@ -25,7 +26,7 @@ const SignUp = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text>Sign Up</Text>
+      <Text>Sign Up For An Account</Text>
       {errorMsg != "" && 
         <Text style={styles.errorMsg}>{errorMsg}</Text>
       }

@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
-  Button,
   TextInput,
   Alert,
-  TouchableOpacity,
 } from 'react-native';
 import styles from '../styles/Home';
 import { getStoryDetails, getStoryUpdates } from "../../helper/api/api";
@@ -126,7 +124,6 @@ const Home = (props) => {
 
   const displaySavedNotifications = async () => {
     const notifications = await getData('messages')
-    console.log("Checking notifications....")
     if (notifications != null) {
       notifications.forEach(async notification => {
         const parsedNotification = JSON.parse(notification)
@@ -164,7 +161,7 @@ const Home = (props) => {
           <StoryButton makeHighlight={false} text={"Logout"} onPress={() => logout()} />
         </View>
         <View style={styles.welcomeContainer}>
-          <Text style={styles.mainText}>Welcome to the Story Tracker, {user && user.email}</Text>
+          <Text testID={"mainTitle"} style={styles.mainText}>Welcome to the Story Tracker, {user && user.email}</Text>
         </View>
         <View style={styles.linkInputContainer}>
           <TextInput style={styles.topicLinkInput} onChangeText={text => onEnterStoryLink(text)} value={storyLink} />

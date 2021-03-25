@@ -9,6 +9,9 @@ import {
 import styles from '../styles/Stories';
 import auth from "@react-native-firebase/auth"
 import database from '@react-native-firebase/database';
+import { clearHistory } from "../../helper/firebase/firebase";
+import StoryButton from "../common/StoryButton";
+import StoryBox from "../common/StoryBox";
 import Loading from './Loading';
 
 const History = ({route, navigation}) => {
@@ -22,9 +25,13 @@ const History = ({route, navigation}) => {
     const onValueChange = database()
       .ref(`/users/${user.uid}/history/${storyID}`)
       .on('value', snapshot => {
-        fetchedLinks = snapshot.val()
-        stories = Object.values(fetchedLinks)
-        setLinks(stories);
+        const fetchedLinks = snapshot.val()
+        if (fetchedLinks) {
+          const stories = Object.values(fetchedLinks)
+          setLinks(stories);
+        } else {
+          setLinks([]);
+        }
       });
 
     // Stop listening for updates when no longer required
@@ -40,24 +47,27 @@ const History = ({route, navigation}) => {
     )
   }
 
-  openLink = (link) => {
+  const openLink = (link) => {
     Linking.openURL(link)
   }
 
+  const clearHistoryOnClick = async () => {
+    clearHistory(user.uid).then(() => navigation.goBack());
+  }
+  console.log(links)
   return (
     <>
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
           <Text style={styles.mainText}>History</Text>
+          <StoryButton onPress={() => clearHistoryOnClick()} text="Clear History"/>
         </View>
         <ScrollView style={styles.storyContainer}>
-          {links !== [] ?
+          {links != [] ?
             links.map((link,i) => {
               return (
                 <View key={i}>
-                  <TouchableOpacity onPress={() => openLink(link)}>
-                    <Text style={styles.storyText}>{link}</Text>
-                  </TouchableOpacity>
+                  <StoryBox text={link} url={link} onPress={() => openLink(link)}/>
                 </View>
               )
             })

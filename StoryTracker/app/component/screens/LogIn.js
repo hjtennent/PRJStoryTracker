@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { View, TextInput, Text, Button, Alert } from "react-native"
 import styles from "../styles/SignUp"
-import auth from "@react-native-firebase/auth"
+import auth from "@react-native-firebase/auth";
 
 const LogIn = (props) => {
   const [email, setEmail] = useState("")
@@ -39,21 +39,23 @@ const LogIn = (props) => {
           <Text style={styles.errorMsg}>{errorMsg}</Text>
         }
         <TextInput 
+          id="emailInput"
           placeholder="Email"
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={(value) => setEmail(value)}
           value={email}
         />
-        <TextInput 
+        <TextInput
           secureTextEntry
+          id="passwordInput"
           placeholder="Password"
           autoCapitalize="none"
           style={styles.textInput}
           onChangeText={(value) => setPassword(value)}
           value={password}
         />
-        <Button title="Log In" style={styles.signUpButton} onPress={() => handleLogIn()} />
+        <Button id="logInButton" title="Login" style={styles.signUpButton} onPress={() => handleLogIn()} />
         <View>
           <Text>Don't have an account? 
             <Text onPress={() => props.navigation.navigate('SignUp')} style={styles.loginLink}>

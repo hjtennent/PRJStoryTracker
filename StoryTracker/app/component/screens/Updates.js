@@ -12,7 +12,7 @@ import Loading from './Loading';
 import { addStoryLinkToUserHistory } from '../../helper/firebase/firebase'
 import auth from '@react-native-firebase/auth'
 
-const Updates = ({route, navigation}) => {
+const Updates = ({ route }) => {
   const [isLoading, setIsLoading] = useState(false)
   const user = auth().currentUser
   const { storyID, storyUpdates } = route.params
@@ -33,7 +33,7 @@ const Updates = ({route, navigation}) => {
     )
   }
 
-  openLink = (link) => {
+  const openLink = (link) => {
     console.log("In openLink")
     addStoryLinkToUserHistory(user.uid, storyID, link)
     Linking.openURL(link)

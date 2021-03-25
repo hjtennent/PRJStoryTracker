@@ -12,7 +12,7 @@ test('StoryBox renders correctly', () => {
   expect(tree).toMatchSnapshot();
 });
 
-test('onPress function fires', () => {
+test('StoryBox onPress function fires', () => {
   const mockFn = jest.fn();
   const { getByText } = render(
     <StoryBox onPress={mockFn} text={"www.test.com"} url="www.test.com" similarity="0.0" />

@@ -16,6 +16,7 @@ exports[`renders correctly 1`] = `
   <TextInput
     allowFontScaling={true}
     autoCapitalize="none"
+    id="emailInput"
     onChangeText={[Function]}
     placeholder="Email"
     rejectResponderTermination={true}
@@ -33,6 +34,7 @@ exports[`renders correctly 1`] = `
   <TextInput
     allowFontScaling={true}
     autoCapitalize="none"
+    id="passwordInput"
     onChangeText={[Function]}
     placeholder="Password"
     rejectResponderTermination={true}
@@ -85,7 +87,7 @@ exports[`renders correctly 1`] = `
           ]
         }
       >
-        Log In
+        Login
       </Text>
     </View>
   </View>

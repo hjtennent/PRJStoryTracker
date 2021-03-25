@@ -1,7 +1,12 @@
 import database from '@react-native-firebase/database'
 
+const clearHistory = async (uid) => {
+  await database().ref(`/users/${uid}/history/`)
+    .remove()
+    .catch(error => console.log(error))
+}
+
 const getStoryHeadlineFromID = async (uid, storyID) => {
-  console.log("In getStoryHeadlineFromID")
   const result = await database().ref(`/users/${uid}/stories/${storyID}/`)
     .once('value')
     .then(snapshot => {
@@ -82,5 +87,6 @@ export {
   addUser,
   addStoryLinkToUserHistory,
   pushFCMTokenToFirebase,
-  getStoryHeadlineFromID
+  getStoryHeadlineFromID,
+  clearHistory
 }
