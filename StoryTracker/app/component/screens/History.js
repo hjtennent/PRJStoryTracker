@@ -37,7 +37,7 @@ const History = ({route, navigation}) => {
     // Stop listening for updates when no longer required
     return () =>
       database()
-        .ref(`/users/${user.uid}`)
+        .ref(`/users/${user.uid}/history/${storyID}`)
         .off('value', onValueChange);
   }, [user.uid]);
 
@@ -52,14 +52,13 @@ const History = ({route, navigation}) => {
   }
 
   const clearHistoryOnClick = async () => {
-    clearHistory(user.uid).then(() => navigation.goBack());
+    clearHistory(user.uid, storyID).then(() => navigation.goBack());
   }
-  console.log(links)
+  
   return (
     <>
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
-          <Text style={styles.mainText}>History</Text>
           <StoryButton onPress={() => clearHistoryOnClick()} text="Clear History"/>
         </View>
         <ScrollView style={styles.storyContainer}>

@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
+    margin: 3,
   },
   greenFollowStoryButton: {
     backgroundColor: "#4D8E6B",
@@ -14,6 +15,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
+    margin: 3,
   },
   smallButtonText: {
     color: "white",

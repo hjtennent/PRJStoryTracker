@@ -93,13 +93,12 @@ const Home = (props) => {
     }
   }
 
-  const getUpdatesButton = (test=false) => {
+  const getUpdatesButton = () => {
     if (savedStoryID == "" || savedStoryTopic == []) {
       Alert.alert("No currently followed story.")
     } else {
       setIsLoading(true)
-      console.log('Home.js: ', savedStoryTopic)
-      getStoryUpdates(savedStoryID, savedStoryTopic, test).then(response => {
+      getStoryUpdates(savedStoryID, savedStoryTopic).then(response => {
         console.log("Home.js", response["SIMILARITIES"])
         props.navigation.navigate("Updates", {
           storyID: savedStoryID,
@@ -158,7 +157,8 @@ const Home = (props) => {
     <>
       <View style={styles.container}>
         <View style={styles.logoutContainer}>
-          <StoryButton makeHighlight={false} text={"Logout"} onPress={() => logout()} />
+            <StoryButton makeHighlight={false} text={"Logout"} onPress={() => logout()} />
+            <StoryButton makeHighlight={false} text={"User Data"} onPress={() => props.navigation.navigate('UserData')} />
         </View>
         <View style={styles.welcomeContainer}>
           <Text testID={"mainTitle"} style={styles.mainText}>Welcome to the Story Tracker, {user && user.email}</Text>
@@ -181,7 +181,6 @@ const Home = (props) => {
             <Text style={styles.storyDescription}>Description: {story['story']}...</Text>
             <View style={styles.buttonContainer}>
               <StoryButton makeHighlight={!isStoryLoaded} text={"Get Updates"} onPress={() => getUpdatesButton()} />
-              <StoryButton makeHighlight={false} text={"Get Test Updates"} onPress={() => getUpdatesButton(true)} />
               <StoryButton makeHighlight={false} text={"Cancel"} onPress={() => cancel()} />
             </View>
           </View>

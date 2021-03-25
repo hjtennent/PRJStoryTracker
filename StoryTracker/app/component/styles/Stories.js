@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   welcomeContainer: {
-    flex: 0.3,
+    flex: 0.1,
     justifyContent: 'center',
     alignItems: 'center',
   },

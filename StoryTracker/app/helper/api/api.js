@@ -16,14 +16,13 @@ const getStoryDetails = (url) => {
   .catch((error) => console.log("Error fetching story details: ", error))
 }
 
-const getStoryUpdates = (id, topic, test) => {
+const getStoryUpdates = (id, topic) => {
   return axios({
     "method": "GET",
     "url": "https://prjstorytrackerapp.herokuapp.com/update/",
     "params": {
       id,
-      topic: JSON.stringify(topic),
-      test
+      topic: JSON.stringify(topic)
     }
     })
     .then(response => {

@@ -14,6 +14,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Updates from './app/component/screens/Updates';
 import Stories from './app/component/screens/Stories';
 import History from './app/component/screens/History';
+import UserData from './app/component/screens/UserData';
 import messaging from "@react-native-firebase/messaging";
 import auth from "@react-native-firebase/auth";
 import { Alert } from 'react-native';
@@ -44,6 +45,7 @@ const App: () => React$Node = () => {
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Updates" component={Updates} />
+        <Stack.Screen name="UserData" component={UserData} />
       </Stack.Navigator>
     )
   }

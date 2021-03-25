@@ -8,8 +8,13 @@ const styles = StyleSheet.create({
   },
   logoutContainer: {
     flex: 0.2,
+    width: '100%',
     flexDirection: "row",
     alignItems: "flex-end",
+    justifyContent: "space-evenly",
+  },
+  buttonContainer: {
+    margin: 5,
   },
   welcomeContainer: {
     flex: 0.3,
@@ -40,6 +45,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   storyInfo: {
+    fontFamily: 'Oxygen-Regular',
     marginBottom: 5
   },
   storyDescription: {
