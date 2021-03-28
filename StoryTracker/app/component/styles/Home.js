@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   },
   storyDescription: {
     color: "black",
+    height: '30%',
   },
   topicLinkInput: {
     padding: 10,
