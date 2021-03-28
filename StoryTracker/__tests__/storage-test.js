@@ -6,7 +6,7 @@ import { storeData, getData, clearData } from '../app/helper/storage/storage';
 Enzyme.configure({ adapter: new Adapter() })
 
 describe('Storage Helper Functions', () => {
-  it('getData', async () => {
+  it('getData when no data has been stored', async () => {
     const response = await getData('messages')
     expect(response).toBe(null);
   });

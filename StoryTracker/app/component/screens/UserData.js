@@ -60,7 +60,6 @@ const UserData = ({route, navigation}) => {
   }
 
   const removeAccount = async () => {
-    console.log("Removed account!");
     removeUserData(user.uid);
     user.delete();
     navigation.replace('Auth')

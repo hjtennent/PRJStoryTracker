@@ -11,9 +11,9 @@ import StoryButton from '../app/component/common/StoryButton';
 Enzyme.configure({ adapter: new Adapter() })
 
 describe('<Home />', () => {
-  it('renders a text input and button to submit link', () => {
+  it('renders a story button and text box', () => {
     const wrapper = shallow(<Home />);
-    expect(wrapper.find(StoryButton).length).toBe(2);
+    expect(wrapper.find(StoryButton).length).toBe(3);
     expect(wrapper.find(TextInput).length).toBe(1);
   });
 });

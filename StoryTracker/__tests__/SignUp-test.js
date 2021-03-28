@@ -30,17 +30,16 @@ test('Check password field is present', () => {
 })
 
 it('should sign up', async () => {
-  // SETUP: render the page you want to test
   const page = render(<SignUp />);
-  // GIVEN: get the DOM elements you want to interact with
+  //Get inputs and buttons to control
   const emailInput = page.getByPlaceholderText("Email");
   const passwordInput = page.getByPlaceholderText("Password");
   const signUpButton = page.getByText("Sign Up");
-  // WHEN: simulate user interaction
+  //Fill in values
   fireEvent.changeText(emailInput, "test10@test.com");
   fireEvent.changeText(passwordInput, "testtest");
   fireEvent.press(signUpButton);
-  // THEN: expect a visual feedback
+
   const signedUp = await waitFor(() => page.queryByText("Sign Up"));
   expect(signedUp).toBeTruthy();
 });

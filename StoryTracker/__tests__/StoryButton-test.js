@@ -7,7 +7,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 
 configure({ adapter: new Adapter() });
 
-test('StoryBox renders correctly', () => {
+test('StoryButton renders correctly', () => {
   const tree = renderer.create(<StoryButton onPress={jest.fn()} makeHighlight={false} text={"Text"} smallText={"Small Text"}/>).toJSON();
   expect(tree).toMatchSnapshot();
 });

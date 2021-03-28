@@ -10,7 +10,7 @@ import { ScrollView, Text } from 'react-native';
 Enzyme.configure({ adapter: new Adapter() })
 
 describe('<Stories />', () => {
-  it('renders a text input and button to submit link', () => {
+  it('renders a scrollview, and text', () => {
     const wrapper = shallow(<Stories />);
     expect(wrapper.find(ScrollView).length).toBe(1);
     expect(wrapper.find(Text).length).toBe(1);

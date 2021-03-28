@@ -16,7 +16,7 @@ describe('<Updates />', () => {
     storyUpdates: [('headline', {'url':'testURL', 'score': '0.5'})]
   }}
 
-  it('renders a text input and button to submit link', () => {
+  it('renders a scroll view and text', () => {
     const wrapper = shallow(<Updates route={routeParams}/>);
     expect(wrapper.find(ScrollView).length).toBe(1);
     expect(wrapper.find(Text).length).toBe(3);

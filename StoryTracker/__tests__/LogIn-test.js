@@ -35,17 +35,16 @@ test('renders correctly', () => {
 });
 
 it('should log in', async () => {
-  // SETUP: render the page you want to test
   const page = render(<LogIn />);
-  // GIVEN: get the DOM elements you want to interact with
+  //Get inputs and buttons to control
   const emailInput = page.getByPlaceholderText("Email");
   const passwordInput = page.getByPlaceholderText("Password");
   const loginButton = page.getByText("Login");
-  // WHEN: simulate user interaction
+  //Fill in values
   fireEvent.changeText(emailInput, "test3@test.com");
   fireEvent.changeText(passwordInput, "testtest");
   fireEvent.press(loginButton);
-  // THEN: expect a visual feedback
+
   const loggedIn = await waitFor(() => page.queryByText("Login"));
   expect(loggedIn).toBeTruthy();
 });

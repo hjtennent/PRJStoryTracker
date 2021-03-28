@@ -1,11 +1,12 @@
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { getStoryDetails, getStoryUpdates } from '../app/helper/api/api';
+import { getStoryDetails } from '../app/helper/api/api';
 
 Enzyme.configure({ adapter: new Adapter() })
 
 describe('API Helper Functions', () => {
+  //Ensure correct details are returned from /story/ endpoint
   it('getStoryDetails', async () => {
     const response = await getStoryDetails("https://www.economist.com/middle-east-and-africa/2021/02/17/frances-forever-war-in-the-sahel");
     const expectedResponse = {

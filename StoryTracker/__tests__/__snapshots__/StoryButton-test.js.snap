@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StoryBox renders correctly 1`] = `
+exports[`StoryButton renders correctly 1`] = `
 <View
   accessible={true}
   focusable={true}
@@ -17,6 +17,7 @@ exports[`StoryBox renders correctly 1`] = `
       "backgroundColor": "#4D8E6B",
       "borderRadius": 20,
       "justifyContent": "center",
+      "margin": 3,
       "opacity": 1,
       "padding": 10,
     }
