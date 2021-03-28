@@ -10,10 +10,12 @@ import styles from '../styles/Stories';
 import auth from "@react-native-firebase/auth"
 import database from '@react-native-firebase/database';
 import Loading from './Loading';
-import StoryBox from "../common/StoryBox"
 import { getStoryObject } from '../../helper/models/StoryModel';
 import { getStoryUpdates } from '../../helper/api/api';
+import { deleteStory } from '../../helper/firebase/firebase';
 import StoryButton from '../common/StoryButton';
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import { Animated } from 'react-native';
 
 const Stories = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -72,6 +74,25 @@ const Stories = ({ route, navigation }) => {
     })
   }
 
+  const DeleteAction = ({ progress, dragX, onPress }) => {
+    const trans = dragX.interpolate({
+      inputRange: [-100, 0],
+      outputRange: [-0.7, 0],
+    });
+    return (
+      <TouchableOpacity style={styles.deleteButton} onPress={onPress}>
+        <Animated.Text
+          style={[styles.deleteStoryAction,
+          {
+            transform: [{ translateX: trans }],
+          }]}
+        >
+          Delete
+        </Animated.Text>
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <>
       <View style={styles.container}>
@@ -81,24 +102,31 @@ const Stories = ({ route, navigation }) => {
         <ScrollView style={styles.storyContainer}>
           {followedStories !== {} ?
             followedStories.map((story,i) => {
+              const deletePress = () => {
+                deleteStory(user.uid, story['id'])
+              }
               return (
-                <View style={styles.similarStoryBox} key={i}>
-                  <View style={styles.headlineContainer}>
-                    <View style={styles.headline}>
-                      <TouchableOpacity onPress={() => openLink(story['url'])}>
-                        <Text style={styles.storyText}>{story['title']}</Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.updatesButton}>
-                      <View style={styles.buttonContainer}>
-                        <StoryButton makeHighlight={false} text={"Get Updates"} 
-                          onPress={() => getUpdatesButton(story['id'], story['keywords'], false)} smallText={true} />
+                <Swipeable key={i} renderRightActions={(progress, dragX) => 
+                  <DeleteAction progress={progress} dragX={dragX} onPress={deletePress}/>}
+                >
+                  <View style={styles.similarStoryBox}>
+                    <View style={styles.headlineContainer}>
+                      <View style={styles.headline}>
+                        <TouchableOpacity onPress={() => openLink(story['url'])}>
+                          <Text style={styles.storyText}>{story['title']}</Text>
+                        </TouchableOpacity>
                       </View>
-                      <StoryButton makeHighlight={false} text={"View History"} 
-                        onPress={() => showStoryHistory(story['id'])} smallText={true} />
+                      <View style={styles.updatesButton}>
+                        <View style={styles.buttonContainer}>
+                          <StoryButton makeHighlight={false} text={"Get Updates"} 
+                            onPress={() => getUpdatesButton(story['id'], story['keywords'], false)} smallText={true} />
+                        </View>
+                        <StoryButton makeHighlight={false} text={"View History"} 
+                          onPress={() => showStoryHistory(story['id'])} smallText={true} />
+                      </View>
                     </View>
                   </View>
-                </View>
+                </Swipeable>
               )
             })
           :

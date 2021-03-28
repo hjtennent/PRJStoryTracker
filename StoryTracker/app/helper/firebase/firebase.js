@@ -1,5 +1,11 @@
 import database from '@react-native-firebase/database'
 
+const deleteStory = async (uid, storyID) => {
+  await database().ref(`/users/${uid}/stories/${storyID}/`)
+    .remove()
+    .catch(error => console.log(error))
+}
+
 const removeUserData = async (uid) => {
   await database().ref(`/users/${uid}/`)
     .remove()
@@ -95,5 +101,6 @@ export {
   pushFCMTokenToFirebase,
   getStoryHeadlineFromID,
   clearHistory,
-  removeUserData
+  removeUserData,
+  deleteStory
 }

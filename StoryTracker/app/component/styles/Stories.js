@@ -12,6 +12,15 @@ const styles = StyleSheet.create({
   storyContainer: {
     flex: 1,
   },
+  deleteButton: {
+    backgroundColor: "red",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  deleteStoryAction: {
+    paddingHorizontal: 30,
+    color: 'white',
+  },
   similarStoryBox: {
     flexDirection: 'row',
     flex: 1,
@@ -20,6 +29,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: 'center',
     padding: 10,
+    backgroundColor: 'white',
   },
   headlineContainer: {
     flex: 1,
