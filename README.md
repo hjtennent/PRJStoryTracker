@@ -1,7 +1,7 @@
 # PRJStoryTracker
 An app for users to track news stories they're interested in over a long period of time.
 
-`git clone ''`
+`git clone 'https://github.com/hjtennent/PRJStoryTracker.git'`
 
 `cd PRJStoryTracker/StoryTracker`
 
