@@ -6,7 +6,7 @@ import {
   Alert,
 } from 'react-native';
 import styles from '../styles/Home';
-import { getStoryDetails, getStoryUpdates } from "../../helper/api/api";
+import { getStoryDetails, getStoryUpdates, getBias } from "../../helper/api/api";
 import { addTopic, pushFCMTokenToFirebase, getStoryHeadlineFromID } from "../../helper/firebase/firebase";
 import auth from "@react-native-firebase/auth"
 import messaging from "@react-native-firebase/messaging"
@@ -151,6 +151,20 @@ const Home = (props) => {
     clearData(); //get rid of the saved notifications once they've been shown to the user
   }
 
+  const getBiasAnalysis = async () => {
+    const bias = await getBias(user.uid)
+    console.log(bias)
+    if (bias['STATUS'] == 200) {
+      if (bias['SOURCE'] != null) {
+        Alert.alert("Bias Analysis", "Your most common author is:\n" + bias['SOURCE'] + "\nTry reading more articles from these sources:\n" + bias['SUGGESTED'])
+      } else {
+        Alert.alert("Bias Analysis", "We couldn't find an author you tend to read more than others. Good job, this suggests your news consumption is relatively balanced!");
+      }      
+    } else {
+      Alert.alert("Bias Analysis", "Sorry, we don't have enough data to give a bias analysis yet.")
+    }
+  }
+
   displaySavedNotifications();
 
   return (
@@ -159,6 +173,7 @@ const Home = (props) => {
         <View style={styles.logoutContainer}>
             <StoryButton makeHighlight={false} text={"Logout"} onPress={() => logout()} />
             <StoryButton makeHighlight={false} text={"User Data"} onPress={() => props.navigation.navigate('UserData')} />
+            <StoryButton makeHighlight={false} text={"Get Bias"} onPress={() => getBiasAnalysis()} />
         </View>
         <View style={styles.welcomeContainer}>
           <Text testID={"mainTitle"} style={styles.mainText}>Welcome to the Story Tracker, {user && user.email}</Text>
