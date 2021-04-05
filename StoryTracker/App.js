@@ -30,11 +30,12 @@ const App: () => React$Node = () => {
   //Handle notifications when the app is in the foreground
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      const message = JSON.stringify(remoteMessage)
       const notificationData = Object.entries(remoteMessage['data'])
       const storyID = notificationData[0][0]
-      const headline = await getStoryHeadlineFromID(auth().currentUser.uid, storyID)
-      Alert.alert(remoteMessage['notification']['title'], "There are new updates for: \n" +
+      const headline = await getStoryHeadlineFromID(auth().currentUser.uid,
+            storyID)
+      Alert.alert(remoteMessage['notification']['title'], 
+            "There are new updates for: \n" +
             headline + "\n Check it out in the Stories tab.")
     });
     return unsubscribe;
@@ -85,8 +86,10 @@ const App: () => React$Node = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Auth">
-        <Stack.Screen name="Auth" component={Auth} options={{headerShown: false}} />
-        <Stack.Screen name="LandingStack" component={LandingStack} options={{headerShown: false}} />
+        <Stack.Screen name="Auth" component={Auth} 
+                      options={{headerShown: false}} />
+        <Stack.Screen name="LandingStack" component={LandingStack} 
+                      options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

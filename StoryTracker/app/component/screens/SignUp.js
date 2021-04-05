@@ -15,7 +15,11 @@ const SignUp = (props) => {
       auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         addUser(userCredential.user.uid, email)
-        Alert.alert("Privacy Notice", "We care about your privacy. This app stores your email, password, a unique ID for your device, the stories you follow, and a history of links you've clicked.")
+        Alert.alert("Privacy Notice", "We care about your privacy. This app " +
+          "stores your email, password, a unique ID for your device, the " + 
+          "stories you follow, and a history of links you've clicked. Your data" +
+          " can be viewed and remove at any time by tapping on User Data on " +
+          "the Home page.")
         props.navigation.replace('LandingStack')
       })
       .catch(error => setErrorMsg(error.message))
@@ -45,10 +49,12 @@ const SignUp = (props) => {
         onChangeText={(value) => setPassword(value)}
         value={password}
       />
-      <Button title="Sign Up" style={styles.signUpButton} onPress={() => handleSignUp()} />
+      <Button title="Sign Up" style={styles.signUpButton} 
+              onPress={() => handleSignUp()} />
       <View>
         <Text>Already have an account? 
-          <Text onPress={() => props.navigation.navigate('Login')} style={styles.loginLink}>
+          <Text onPress={() => props.navigation.navigate('Login')} 
+                style={styles.loginLink}>
             Login
           </Text>
         </Text>

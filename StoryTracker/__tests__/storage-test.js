@@ -17,7 +17,9 @@ describe('Storage Helper Functions', () => {
   });
   it('clearData', async () => {
     const value = { test: "object" }
-    const response = storeData(value).then(async () => clearData().then(async () => getData('messages')))
+    const response = storeData(value)
+                      .then(async () => clearData()
+                      .then(async () => getData('messages')))
     expect(response).resolves.toBe(null);
   });
 });

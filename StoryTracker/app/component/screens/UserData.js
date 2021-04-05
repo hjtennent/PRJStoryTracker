@@ -18,7 +18,6 @@ const UserData = ({route, navigation}) => {
   const [userHistory, setUserHistory] = useState([])
   const [userStories, setUserStories] = useState([])
   const user = auth().currentUser
-  const [links, setLinks] = useState([])
 
   useEffect(() => {
     const onValueChange = database()
@@ -29,6 +28,7 @@ const UserData = ({route, navigation}) => {
           setUserEmail(userData['email'])
           setUserToken(userData['fcmToken'])
           let history = []
+          //get all of the links a user has visited
           if (userData['history']) {
             Object.entries(userData['history']).forEach(item => {
               Object.values(Object.values(item)[1]).forEach(link => {
@@ -38,6 +38,7 @@ const UserData = ({route, navigation}) => {
           }
           setUserHistory(history)
           let stories = []
+          //get all followed stories for a user
           if (userData['stories']) {
             Object.entries(userData['stories']).forEach(item => {
               stories.push(item[1]['title'])
@@ -73,15 +74,21 @@ const UserData = ({route, navigation}) => {
         <ScrollView style={styles.storyContainer}>
           <View>
             <Text style={styles.sectionHeader}>User ID</Text>
-            <Text style={styles.sectionText}>{user.uid ? user.uid : "None"}</Text>
+            <Text style={styles.sectionText}>
+              {user.uid ? user.uid : "None"}
+            </Text>
           </View>
           <View>
             <Text style={styles.sectionHeader}>Email</Text>
-            <Text style={styles.sectionText}>{userEmail ? userEmail : "None"}</Text>
+            <Text style={styles.sectionText}>
+              {userEmail ? userEmail : "None"}
+            </Text>
           </View>
           <View>
             <Text style={styles.sectionHeader}>Device Token</Text>
-            <Text style={styles.sectionText}>{userToken ? userToken : "None"}</Text>
+            <Text style={styles.sectionText}>
+              {userToken ? userToken : "None"}
+            </Text>
           </View>
           <View>
             <Text style={styles.sectionHeader}>History</Text>

@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
-  AppState,
   Linking,
   ScrollView
 } from 'react-native';
@@ -34,7 +33,6 @@ const Updates = ({ route }) => {
   }
 
   const openLink = (link) => {
-    console.log("In openLink")
     addStoryLinkToUserHistory(user.uid, storyID, link)
     Linking.openURL(link)
   }
@@ -57,7 +55,9 @@ const Updates = ({ route }) => {
               })
               :
               <View style={styles.noStoriesContainer}>
-                <Text style={styles.noStoriesText}>No similar stories found.</Text>
+                <Text style={styles.noStoriesText}>
+                  No similar stories found.
+                </Text>
               </View>
             }
           </View>
@@ -74,7 +74,9 @@ const Updates = ({ route }) => {
             })
             :
             <View style={styles.noStoriesContainer}>
-              <Text style={styles.noStoriesText}>No other stories found.</Text>
+              <Text style={styles.noStoriesText}>
+                No other stories found.
+              </Text>
             </View>
           }
         </View>

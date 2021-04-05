@@ -10,7 +10,9 @@ export default StoryBox = (props) => {
     <View style={styles.similarStoryBox}>
       <View style={styles.headlineContainer}>
         <TouchableOpacity id="storyBoxButton" onPress={() => props.onPress()}>
-          <Text style={styles.storyText}>{props.text != "" ? props.text : props.url}</Text>
+          <Text style={styles.storyText}>
+            {props.text != "" ? props.text : props.url}
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.similarityLabelContainer}>

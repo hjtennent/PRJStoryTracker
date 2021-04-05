@@ -22,7 +22,6 @@ const getStoryHeadlineFromID = async (uid, storyID) => {
   const result = await database().ref(`/users/${uid}/stories/${storyID}/`)
     .once('value')
     .then(snapshot => {
-      console.log("Snapshot: ", snapshot.val())
       return snapshot.val()
     })
     .catch(error => console.log(error))
@@ -34,14 +33,12 @@ const getStoryHeadlineFromID = async (uid, storyID) => {
 }
 
 const pushFCMTokenToFirebase = (uid, token) => {
-  console.log(token)
   database().ref(`/users/${uid}`).update({
     fcmToken: token
   }).catch(error => console.log(error))
 }
 
 const addStoryLinkToUserHistory = (uid, storyID, link) => {
-  console.log("In add story link to user history")
   database().ref(`/users/${uid}/history/${storyID}/`).push(link)
     .catch(error => console.log(error))
 }
@@ -54,13 +51,11 @@ const addUser = (uid, email) => {
 
 const addTopic = async (userID, url, title, authors, keywords, date) => {
   var alreadyFollowed = false
-  console.log(userID)
   const result = await database().ref('/users/').child(userID).child('/stories/').once('value').then(snapshot => {
     const followedStories = snapshot.val()
-    console.log("URL: ", url)
+    //Check if the user already follows this story
     if (followedStories) {
       Object.entries(followedStories).forEach((item, key) => {
-        console.log("Followed URL: ", item[1]['url'])
         if (item[1]["url"] == url) {
           alreadyFollowed = true
         }
@@ -73,7 +68,7 @@ const addTopic = async (userID, url, title, authors, keywords, date) => {
   if (result['alreadyFollowed'] == true) {
     return result
   }
-
+  //Add story to database
   const newRef = database().ref(`/users/${userID}/stories/`)
     .push();
   const key = newRef.key
@@ -86,7 +81,7 @@ const addTopic = async (userID, url, title, authors, keywords, date) => {
     authors
   })
   .catch(error => console.log(error))
-  //TODO only return this when set was successful
+  
   return {
     alreadyFollowed,
     key: key,

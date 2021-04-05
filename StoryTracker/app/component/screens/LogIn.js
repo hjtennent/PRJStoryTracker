@@ -55,10 +55,12 @@ const LogIn = (props) => {
           onChangeText={(value) => setPassword(value)}
           value={password}
         />
-        <Button id="logInButton" title="Login" style={styles.signUpButton} onPress={() => handleLogIn()} />
+        <Button id="logInButton" title="Login" style={styles.signUpButton} 
+                onPress={() => handleLogIn()} />
         <View>
           <Text>Don't have an account? 
-            <Text onPress={() => props.navigation.navigate('SignUp')} style={styles.loginLink}>
+            <Text onPress={() => props.navigation.navigate('SignUp')} 
+                  style={styles.loginLink}>
               Sign Up
             </Text>
           </Text>

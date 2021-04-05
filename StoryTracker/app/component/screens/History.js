@@ -4,7 +4,6 @@ import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
 } from 'react-native';
 import styles from '../styles/Stories';
 import auth from "@react-native-firebase/auth"
@@ -19,7 +18,6 @@ const History = ({route, navigation}) => {
   const user = auth().currentUser
   const [links, setLinks] = useState([])
   const { storyID } = route.params
-
 
   useEffect(() => {
     const onValueChange = database()
@@ -59,14 +57,16 @@ const History = ({route, navigation}) => {
     <>
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
-          <StoryButton onPress={() => clearHistoryOnClick()} text="Clear History"/>
+          <StoryButton onPress={() => clearHistoryOnClick()} 
+                       text="Clear History"/>
         </View>
         <ScrollView style={styles.storyContainer}>
           {links != [] ?
             links.map((link,i) => {
               return (
                 <View key={i}>
-                  <StoryBox text={link} url={link} onPress={() => openLink(link)}/>
+                  <StoryBox text={link} url={link} 
+                            onPress={() => openLink(link)}/>
                 </View>
               )
             })

@@ -30,7 +30,9 @@ const Stories = ({ route, navigation }) => {
         stories = []
         if (fetchedStories != null) {
           Object.entries(fetchedStories).forEach(item => {
-            object = getStoryObject(item[0], item[1]["url"], item[1]["title"], "", item[1]["authors"], item[1]["date"], item[1]["topic"])
+            object = getStoryObject(item[0], item[1]["url"], item[1]["title"],
+                                    "", item[1]["authors"], item[1]["date"],
+                                    item[1]["topic"])
             stories.push(object)
           })
         }
@@ -75,6 +77,7 @@ const Stories = ({ route, navigation }) => {
   }
 
   const DeleteAction = ({ progress, dragX, onPress }) => {
+    //Move text when swiped
     const trans = dragX.interpolate({
       inputRange: [-100, 0],
       outputRange: [-0.7, 0],
@@ -107,8 +110,9 @@ const Stories = ({ route, navigation }) => {
               }
               return (
                 <Swipeable key={i} renderRightActions={(progress, dragX) => 
-                  <DeleteAction progress={progress} dragX={dragX} onPress={deletePress}/>}
-                >
+                  <DeleteAction progress={progress} dragX={dragX} 
+                    onPress={deletePress}/>
+                }>
                   <View style={styles.similarStoryBox}>
                     <View style={styles.headlineContainer}>
                       <View style={styles.headline}>
@@ -119,10 +123,14 @@ const Stories = ({ route, navigation }) => {
                       <View style={styles.updatesButton}>
                         <View style={styles.buttonContainer}>
                           <StoryButton makeHighlight={false} text={"Get Updates"} 
-                            onPress={() => getUpdatesButton(story['id'], story['keywords'], false)} smallText={true} />
+                            onPress={() => 
+                              getUpdatesButton(story['id'], story['keywords'],
+                                               false)
+                            } smallText={true} />
                         </View>
                         <StoryButton makeHighlight={false} text={"View History"} 
-                          onPress={() => showStoryHistory(story['id'])} smallText={true} />
+                          onPress={() => showStoryHistory(story['id'])} 
+                          smallText={true} />
                       </View>
                     </View>
                   </View>
