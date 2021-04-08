@@ -1,13 +1,17 @@
 # PRJStoryTracker
 An app for users to track news stories they're interested in over a long period of time.
 
+## Installation
+
 `git clone 'https://github.com/hjtennent/PRJStoryTracker.git'`
 
 `cd PRJStoryTracker/StoryTracker`
 
 `npm i`
 
-To run the application, Android Studio must be installed and an Android emulator should be setup. This emulator should be running API 29 and target Android 10.0. To setup an emulator, follow the guide given below. To run the app on the emulator, open the AVD Manager from the main Android Studio menu and press the green play button next to the suitable emulator. Next, run the following command:
+## Running the Application
+
+Android Studio must be installed and an Android emulator should be running. This emulator should be running API 29 and target Android 10.0. To setup an emulator, follow the guide given below. To run the app on the emulator, open the AVD Manager from the main Android Studio menu and press the green play button next to the suitable emulator. Next, run the following command:
 
 `npx react-native run-android`
 
@@ -15,7 +19,7 @@ To run tests:
 
 `npm test`
 
-To setup an Android Emulator:
+## Setting up an Android Emulator
 
 <img width="778" alt="MainASMenu" src="https://user-images.githubusercontent.com/7073476/113590280-5c85d680-962a-11eb-8e79-87743e2ecd6c.png">
 
@@ -38,4 +42,8 @@ After verifing that the emulator built runs on API 29 and targets Android 10.0, 
 <img width="1001" alt="AVDVerifyConfig" src="https://user-images.githubusercontent.com/7073476/113590004-fe58f380-9629-11eb-9ba0-529ba7a95a34.png">
 
 Upon returning to the AVD Manager, the emulator should be shown 'Your Virtual Devices'. Press the green play button to start the emulator. After this, the commands given above can be used to run the application.
+
+## Troubleshooting
+
+If the tests are run without using the application beforehand, some tests may fail. This is due to Heroku using dynamic servers which are given more resources as they are used. When they have not been called recently, API calls can take longer than usual and this can result in some tests failing from taking too long. To resolve this issue, the tests should be run again, and they should pass as Heroku devotes more resources to the server.
 
