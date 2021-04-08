@@ -1,8 +1,9 @@
 from newsapi.newsapi_client import NewsApiClient
+from storyTracker.config import api_key
 
 class NewsAPIHandler:
   def __init__(self):
-    self.api = NewsApiClient(api_key="cc46bad07d1a41ddb18f3d3c6d9da768")
+    self.api = NewsApiClient(api_key=api_key)
 
   def getSources(self):
     sources = self.api.get_sources()['sources']
